@@ -92,10 +92,6 @@ body {
         <div class="tv-sub">SPIELPLAN</div>
         <div id="tv-plan-body" class="tv-list">…</div>
     </section>
-    <section class="tv-sec" data-page="bilder">
-        <div class="tv-sub">FOTOS</div>
-        <div id="tv-fotos-body" class="tv-list" style="display:flex;flex-wrap:wrap;gap:15px;justify-content:center;">…</div>
-    </section>
     <section class="tv-sec" data-page="sieger">
         <div class="tv-sub">SIEGER</div>
         <div id="tv-sieger-body" class="tv-list" style="text-align:center;">…</div>
@@ -104,13 +100,12 @@ body {
         <div class="tv-sub">VERBINDEN</div>
         <div id="tv-qr-body" class="tv-list" style="text-align:center;">…</div>
     </section>
-    <section class="tv-sec" data-page="tippspiel">
-        <div class="tv-sub">TIPPSPIEL</div>
-        <div id="tv-tipp-body" class="tv-list">…</div>
-    </section>
     <section class="tv-sec" data-page="spielregeln">
-        <div class="tv-sub">REGELN</div>
-        <div id="tv-regeln-body" class="tv-list" style="font-size:1.2rem;">…</div>
+        <div class="tv-sub">SPIELREGELN</div>
+        <div id="tv-regeln-body" style="text-align:center;">
+            <img src="rules.png" style="max-height:calc(100vh - 250px); max-width:90vw; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.5);" onerror="this.style.display='none'; document.getElementById('regeln-text').style.display='block';">
+            <div id="regeln-text" style="display:none; font-size:1.5rem; color:var(--mu);">Regeln werden geladen...</div>
+        </div>
     </section>
     <section class="tv-sec" data-page="server_monitor">
         <div class="tv-sub">SYSTEM STATUS</div>
