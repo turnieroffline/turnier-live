@@ -10,15 +10,21 @@ body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:
 #tv-header { position:fixed; top:0; left:0; right:0; height:110px; display:grid; grid-template-columns: 1fr 2fr 1fr; align-items:center; padding:0 40px; background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%); }
 #dynamic-title { border-left:4px solid var(--accent); padding-left:15px; font-family:var(--F); font-size:2.2rem; color: var(--accent); text-transform: uppercase; }
 #clock { font-family: monospace; font-size:2.6rem; font-weight:bold; background: rgba(0,0,0,0.4); padding: 5px 25px; border-radius: 12px; border-right: 8px solid var(--accent); }
-#tv-content { position: absolute; top: 110px; left: 0; width: 100vw; height: calc(100vh - 210px); display: flex; align-items: center; justify-content: center; }
-.score-teams { display: flex; align-items: center; gap: 50px; margin-bottom: 20px; }
+#tv-content { position: absolute; top: 110px; left: 0; width: 100vw; height: calc(100vh - 210px); overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px 0; gap: 28px; }
+.tv-sec { display: none; width: 100%; max-width: 96vw; text-align: center; }
+.tv-sec.on { display: block; }
+.score-teams { display: flex; align-items: center; justify-content: center; gap: 50px; margin-bottom: 20px; flex-wrap: wrap; }
 .score-team { font-family: var(--F); font-size: 6rem; letter-spacing: 2px; }
 .score-num { font-family: var(--F); font-size: 11rem; color: #f0b830; letter-spacing: 20px; text-shadow: 0 0 50px rgba(240,184,48,0.3); }
+.tv-sub { font-family: var(--F); color: var(--accent); font-size: 2rem; margin-bottom: 16px; }
+.tv-list { max-width: 900px; margin: 0 auto; font-size: 1.4rem; line-height: 1.6; color: #ccc; text-align: left; }
+.tv-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08); padding: 10px 0; }
 #tv-footer { position:fixed; bottom:0; left:0; right:0; height:100px; background: #000; border-top:4px solid var(--accent); display:flex; align-items:center; overflow:hidden; }
 #ticker-label { background: var(--accent); color: #000; font-family: var(--F); font-size: 2rem; padding: 15px 40px; z-index: 10; font-weight:bold; }
 #ticker-track { white-space:nowrap; color: var(--accent); font-family: var(--F); font-size: 3.5rem; animation: tick 30s linear infinite; padding-left: 100%; }
 @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-200%); } }
 </style>
+<script type="application/json" id="cloud-sync-cfg">{"which":"tv","online_tv":true,"online_handy":true,"pages":{"spielstand":true,"teams":true,"spielplan":true,"live":true,"siegerehrung":true}}</script>
 </head>
 <body>
 <div id="tv-header">
@@ -27,17 +33,41 @@ body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:
     <div style="text-align:right"><div id="clock">00:00:00</div></div>
 </div>
 <div id="tv-content">
-    <div id="score-view">
-        <div id="runde-title" style="font-family:var(--F); color:var(--accent); font-size:2.5rem; text-align:center; margin-bottom: 20px;">BITTE WARTEN</div>
+    <section class="tv-sec" data-page="live">
+        <div id="runde-title" class="tv-sub">BITTE WARTEN</div>
         <div class="score-teams">
             <div id="t1" class="score-team">HEIM</div>
             <div id="sc" class="score-num">0:0</div>
             <div id="t2" class="score-team">GAST</div>
         </div>
-    </div>
+    </section>
+    <section class="tv-sec" data-page="spielstand">
+        <div class="tv-sub">SPIELSTAND</div>
+        <div id="tv-stand-body" class="tv-list">…</div>
+    </section>
+    <section class="tv-sec" data-page="teams">
+        <div class="tv-sub">TEAMS</div>
+        <div id="tv-teams-body" class="tv-list">…</div>
+    </section>
+    <section class="tv-sec" data-page="spielplan">
+        <div class="tv-sub">SPIELPLAN</div>
+        <div id="tv-plan-body" class="tv-list">…</div>
+    </section>
+    <section class="tv-sec" data-page="siegerehrung">
+        <div class="tv-sub">SIEGEREHRUNG</div>
+        <div id="tv-sieg-body" class="tv-list" style="text-align:center;font-size:1.8rem;">Top-Plätze nach Punkten.</div>
+    </section>
 </div>
-<div id="tv-footer"><div id="ticker-label">INFO</div><div id="ticker-track">+++ WILLKOMMEN BEI TURNIEROFFLINE +++ LADE AKTUELLSTE DATEN VOM SERVER +++</div></div>
+<div id="tv-footer"><div id="ticker-label">INFO</div><div id="ticker-track">+++ TURNIEROFFLINE +++</div></div>
 <script>
+(function(){
+  var cfg = { pages: { spielstand:true, teams:true, spielplan:true, live:true, siegerehrung:true } };
+  try { var el = document.getElementById('cloud-sync-cfg'); if (el && el.textContent) cfg = JSON.parse(el.textContent); } catch (e) {}
+  var P = cfg.pages || {};
+  document.querySelectorAll('.tv-sec').forEach(function(sec){
+    if (P[sec.getAttribute('data-page')]) sec.classList.add('on');
+  });
+})();
 async function update() {
     try {
         const r = await fetch('live.json?t=' + Date.now());
@@ -48,11 +78,34 @@ async function update() {
             document.getElementById('t2').textContent = d.spiel.t2name;
             document.getElementById('sc').textContent = d.spiel.tore1 + ':' + d.spiel.tore2;
             document.getElementById('runde-title').textContent = d.spiel.runde || 'LIVE';
+            var st = document.getElementById('tv-stand-body');
+            if (st) st.innerHTML = '<div style="text-align:center;font-size:2.2rem">' + d.spiel.t1name + ' <strong style="color:#f0b830">' + d.spiel.tore1 + ':' + d.spiel.tore2 + '</strong> ' + d.spiel.t2name + '</div>';
+        }
+        if (d.teams && Array.isArray(d.teams)) {
+            var tb = document.getElementById('tv-teams-body');
+            if (tb) tb.innerHTML = d.teams.map(function(t){ return '<div class="tv-row"><span>' + (t.name||'') + '</span></div>'; }).join('') || '—';
+        }
+        if (d.spielplan && Array.isArray(d.spielplan)) {
+            var pb = document.getElementById('tv-plan-body');
+            if (pb) pb.innerHTML = d.spielplan.slice(0, 30).map(function(s){
+              var n1 = s.t1name || s.team1 || '?', n2 = s.t2name || s.team2 || '?';
+              return '<div class="tv-row"><span>' + n1 + ' vs ' + n2 + '</span><span>' + (s.tore1!=null ? s.tore1+':'+s.tore2 : '') + '</span></div>';
+            }).join('') || '—';
+        }
+        if (d.tabelle) {
+            var sg = document.getElementById('tv-sieg-body');
+            if (sg) {
+                var lines = [];
+                for (var g in d.tabelle) {
+                    (d.tabelle[g]||[]).slice(0,3).forEach(function(t,i){ lines.push((i+1)+'. '+(t.name||'')+' ('+(t.pkt||0)+' Pkt)'); });
+                }
+                sg.innerHTML = lines.length ? lines.map(function(x){return '<div style="margin:8px 0">'+x+'</div>';}).join('') : '—';
+            }
         }
     } catch(e) {}
 }
 setInterval(update, 5000); update();
-setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE'); }, 1000);
+setInterval(function(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE'); }, 1000);
 </script>
 </body>
 </html>
