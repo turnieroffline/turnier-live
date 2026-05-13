@@ -51,8 +51,12 @@ body {
 
 #tv-footer { position:fixed; bottom:0; left:0; right:0; height:100px; background: #000; border-top:4px solid var(--or); display:flex; align-items:center; overflow:hidden; }
 #ticker-label { background: var(--or); color: #000; font-family: var(--F); font-size: 2rem; padding: 15px 40px; z-index: 10; font-weight:bold; }
-#ticker-track { white-space:nowrap; color: var(--or); font-family: var(--F); font-size: 3.5rem; animation: tick 30s linear infinite; padding-left: 100%; }
+#ticker-track { white-space:nowrap; color: var(--or); font-family: var(--F); font-size: 3.5rem; animation: tick 60s linear infinite; padding-left: 100%; }
 @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-200%); } }
+
+#preloader { position:fixed; top:0; left:0; right:0; bottom:0; background:var(--bg); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.spinner { width: 50px; height: 50px; border: 5px solid rgba(255,107,0,0.2); border-top-color: var(--or); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .tv-legal { position: fixed; bottom: 110px; right: 20px; font-size: 0.6rem; color: var(--mu); z-index: 1000; display:flex; gap:20px; }
 .tv-legal a { color: var(--mu); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; }
@@ -60,6 +64,7 @@ body {
 <script type="application/json" id="cloud-sync-cfg">{"which":"tv","online_tv":true,"online_handy":true,"pages":{"tabelle":true,"spielplan":true,"team":true,"bilder":true,"sieger":true,"verbinden":true,"tippspiel":true,"spielregeln":true,"party_tv":true,"server_monitor":true},"labels":{"tabelle":"📊 Tabelle","spielplan":"📅 Spielplan","team":"👥 Teams","tippspiel":"🎲 Tippspiel","bilder":"📸 Fotos","sieger":"🥇 Sieger","spielregeln":"📜 Regeln","verbinden":"📱 QR-Code","party_tv":"🎉 Party-Wall","server_monitor":"🖥️ Server-Monitor"},"local_addr":"192.168.2.10","local_url":"http:\/\/192.168.2.10\/mobile"}</script>
 </head>
 <body>
+<div id="preloader"><div class="spinner"></div><div style="margin-top:20px;font-family:var(--F);color:var(--or);letter-spacing:2px;">TURNIER-WOLKE LÄDT...</div></div>
 <div id="cloud-badge">☁️ CLOUD VERSION</div>
 <div class="tv-hdr">
     <div class="tv-hdr-name" id="logo-area">LADE...</div>
@@ -247,6 +252,8 @@ window.onerror = function(msg, url, line) {
             document.documentElement.style.setProperty('--or', c.ak);
             document.documentElement.style.setProperty('--bg', c.bg);
         }
+        var loader = document.getElementById('preloader');
+        if (loader) loader.style.display = 'none';
     } catch(e) {}
   }
   setInterval(update, 10000); update();
