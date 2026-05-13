@@ -84,10 +84,9 @@ body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:
 </head>
 <body>
 <div id="cloud-badge">☁️ CLOUD VERSION</div>
-<div id="tv-header">
-    <div id="logo-area">LIVE</div>
-    <div id="event-name">LADE DATEN...</div>
-    <div id="clock">00:00:00</div>
+<div class="tv-hdr">
+    <div class="tv-hdr-name" id="logo-area">LADE...</div>
+    <div class="tv-hdr-time" id="clock">00:00:00</div>
 </div>
 <div id="tv-content">
     <section class="tv-sec" data-page="live">
@@ -169,7 +168,9 @@ async function update() {
     try {
         const r = await fetch('live.json?t=' + Date.now());
         const d = await r.json();
-        document.getElementById('event-name').textContent = d.event;
+        var ticker = document.getElementById('ticker-track');
+        if (ticker) ticker.textContent = '+++ ' + (d.event || 'TurnierOffline') + ' Cloud TV +++';
+        
         if (d.spiel) {
             document.getElementById('t1').textContent = d.spiel.t1name;
             document.getElementById('t2').textContent = d.spiel.t2name;
