@@ -135,6 +135,12 @@ body {
 <nav class="nav" id="bottom-nav"></nav>
 
 <script>
+window.onerror = function(msg, url, line) {
+    var err = document.createElement('div');
+    err.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:rgba(232,54,74,0.9);color:#fff;padding:10px;font-size:0.6rem;z-index:99999;word-break:break-all;';
+    err.textContent = 'JS-ERROR: ' + msg + ' (L:' + line + ')';
+    document.body.appendChild(err);
+};
 (function(){
   if (!localStorage.getItem('cb_ok')) document.getElementById('cookie-banner').classList.add('on');
   
@@ -244,6 +250,11 @@ body {
             document.getElementById('t2').textContent = d.spiel.t2name;
             document.getElementById('sc').textContent = d.spiel.tore1 + ':' + d.spiel.tore2;
             document.getElementById('runde').textContent = d.spiel.runde || 'LIVE';
+        } else {
+            document.getElementById('t1').textContent = 'KEIN SPIEL';
+            document.getElementById('t2').textContent = 'AKTIV';
+            document.getElementById('sc').textContent = '0:0';
+            document.getElementById('runde').textContent = 'WILLKOMMEN';
         }
         
         if (d.teams) {
