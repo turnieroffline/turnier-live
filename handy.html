@@ -41,6 +41,35 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
     <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">SPIELPLAN</div><div id="h-plan">…</div></div>
   </div>
   
+<!-- Panel: server_monitor -->
+
+    <div class="panel" data-page="server_monitor">
+        <div class="card" style="padding:15px; background:var(--s2);">
+            <div style="font-family:var(--F); color:var(--or); margin-bottom:15px; letter-spacing:1px;">🖥️ SYSTEM-STATUS</div>
+            <div id="sm-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div style="padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #3b82f6;">
+                    <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">CPU</div>
+                    <div id="sm-cpu" style="font-size:1.1rem; font-weight:bold; color:#3b82f6;">--%</div>
+                </div>
+                <div style="padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #a855f7;">
+                    <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">RAM</div>
+                    <div id="sm-ram" style="font-size:1.1rem; font-weight:bold; color:#a855f7;">--%</div>
+                </div>
+                <div style="padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #ef4444;">
+                    <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">SSD</div>
+                    <div id="sm-ssd" style="font-size:1.1rem; font-weight:bold; color:#ef4444;">--%</div>
+                </div>
+                <div style="padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #22c55e;">
+                    <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">AKKU</div>
+                    <div id="sm-bat" style="font-size:1.1rem; font-weight:bold; color:#22c55e;">--%</div>
+                </div>
+            </div>
+            <div id="sm-gpu-box" style="margin-top:10px; padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #1ec96a; display:none;">
+                <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">GPU (NVIDIA)</div>
+                <div id="sm-gpu" style="font-size:1.1rem; font-weight:bold; color:#1ec96a;">--%</div>
+            </div>
+        </div>
+    </div>
 </div>
 <nav class="nav" id="bottom-nav"></nav>
 <script>
