@@ -6,8 +6,8 @@
         "md": "#121212",
         "ml": "#ffffff"
     },
-    "updated": "16:45:23",
-    "ts": 1778683523,
+    "updated": "16:46:01",
+    "ts": 1778683561,
     "spiel": {
         "id": 359,
         "team1_id": 2,
@@ -255,12 +255,12 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 27,
+        "cpu_percent": 94,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 6378,
+            "used_mb": 6296,
             "total_mb": 7675,
-            "percent": 83
+            "percent": 82
         },
         "disk": {
             "used_gb": 45.2,
@@ -273,6 +273,6 @@
             "status": "Lädt",
             "time_label": "~45 Min"
         },
-        "ts": 1778683523
+        "ts": 1778683561
     }
 }
