@@ -245,6 +245,11 @@ async function update() {
                 set('sm-gpu', sm.gpu.pct + '%');
             }
         }
+        if (d.colors) {
+            var c = d.colors;
+            document.documentElement.style.setProperty('--or', c.ak);
+            document.documentElement.style.setProperty('--bg', c.md);
+        }
     } catch(e) {}
 }
 setInterval(update, 10000); update();
