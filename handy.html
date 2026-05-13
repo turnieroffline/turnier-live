@@ -5,26 +5,84 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>TurnierOffline Live</title>
 <style>
-:root { --or: #ff6b00; --bg: #08090e; --s1: #0e1018; --s2: #141620; --s3: #1e2232; --tx: #dde3f0; --mu: #5c6880; --F: 'Impact', sans-serif; }
-body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--tx); margin:0; padding-bottom: 88px; }
-#cloud-badge {
-    position: fixed; top: 10px; right: 10px; z-index: 1000;
-    background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; color: #3b82f6;
-    padding: 4px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: bold;
-    letter-spacing: 1px; backdrop-filter: blur(5px); pointer-events: none;
+:root {
+    --or:  #ff6b00;
+    --or2: #ff8c30;
+    --bg:  #121212;
+    --s1:  color-mix(in srgb, var(--bg) 92%, white 8%);
+    --s2:  color-mix(in srgb, var(--bg) 84%, white 16%);
+    --s3:  color-mix(in srgb, var(--bg) 76%, white 24%);
+    --s4:  color-mix(in srgb, var(--bg) 68%, white 32%);
+    --tx:  #dde3f0;
+    --mu:  #5c6880;
+    --mu2: #8a96b4;
+    --gn:  #1ec96a;
+    --gd:  #f0b830;
+    --rd:  #e8364a;
+    --F:   'Impact','Haettenschweiler','Arial Narrow Bold',sans-serif;
+    --B:   -apple-system,'Segoe UI','Roboto','Helvetica Neue',Arial,sans-serif;
 }
-.hdr { background: var(--s1); padding: 18px; text-align: center; font-family: var(--F); font-size: 1.2rem; letter-spacing: 2px; color: var(--or); border-bottom: 1px solid var(--s2); }
-.card { background: var(--s1); border: 1px solid var(--s3); border-radius: 16px; padding: 20px; margin: 15px; }
-.score-num { font-family: var(--F); font-size: 3.5rem; color: #f0b830; letter-spacing: 10px; margin: 10px 0; }
+body {
+    font-family: var(--B); background: var(--bg); color: var(--tx); margin:0; padding-bottom: 72px; min-height: 100vh;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+}
+
+/* CLOUD HINT */
+#cloud-badge {
+    position: fixed; top: 65px; right: 10px; z-index: 11000;
+    background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; color: #3b82f6;
+    padding: 3px 8px; border-radius: 4px; font-size: 0.55rem; font-weight: bold;
+    letter-spacing: 1px; backdrop-filter: blur(10px); pointer-events: none;
+}
+
+.hdr {
+    position: sticky; top: 0; z-index: 9000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 16px; height: 54px;
+    background: linear-gradient(180deg, rgba(14,16,24,.98) 0%, rgba(8,9,14,.96) 100%);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,107,0,.3);
+    box-shadow: 0 2px 20px rgba(0,0,0,.4);
+    font-family: var(--F); font-size: .9rem; letter-spacing: 2px; color: var(--or); text-transform: uppercase;
+}
+
+.card { background: var(--s1); border: 1px solid var(--s3); border-radius: 16px; padding: 16px; margin: 12px 14px 0; box-shadow: 0 4px 16px rgba(0,0,0,.25); }
+.score-num { font-family: var(--F); font-size: 3.5rem; color: var(--gd); letter-spacing: 10px; margin: 10px 0; }
 .teams { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; }
 .tab-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; display: flex; border-top: 1px solid var(--s3); flex-wrap: wrap; }
-.nav-item { flex: 1; min-width: 22%; padding: 14px 6px; text-align: center; color: var(--mu); text-decoration: none; font-size: 0.72rem; border: none; background: none; cursor: pointer; }
-.nav-item.active { color: var(--or); font-weight: 700; }
+
 .panel { display: none; }
-.panel.on { display: block; }
+.panel.on { display: block; animation: fadeIn 0.2s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* BOTTOM NAV */
+.nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 10000;
+    display: flex; flex-direction: row; justify-content: center;
+    background: rgba(10,11,18,.98); backdrop-filter: blur(20px);
+    border-top: 1px solid var(--s3); padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    flex: 0 0 20%; min-width: 68px; padding: 8px 0 9px; gap: 2px;
+    color: var(--mu); font-family: var(--B); font-size: .52rem; font-weight: 500;
+    transition: color .15s; text-decoration: none; border: none; background: none; cursor: pointer; position: relative;
+}
+.nav-item.active { color: var(--or); }
+.nav-item.active::after {
+    content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 2px; background: var(--or); border-radius: 2px 2px 0 0;
+}
+.nav-item .ico { font-size: 1.15rem; line-height: 1; }
+
+/* WIFI BUTTON */
+.wifi-btn {
+    display: block; width: 100%; padding: 12px; background: var(--or); color: #000;
+    text-align: center; border-radius: 10px; font-weight: bold; margin-top: 15px;
+    font-family: var(--F); letter-spacing: 1px; font-size: 1rem;
+}
 </style>
-<script type="application/json" id="cloud-sync-cfg">{"which":"handy","online_tv":true,"online_handy":true,"pages":{"index":true,"tabelle":true,"spielplan":true,"settings":true},"labels":{"index":{"ico":"⚽","lbl":"Spiel"},"tabelle":{"ico":"📊","lbl":"Tabelle"},"spielplan":{"ico":"📅","lbl":"Plan"},"tippspiel":{"ico":"🏆","lbl":"Tippspiel"},"fotos":{"ico":"📸","lbl":"Fotos"},"info":{"ico":"📞","lbl":"Info"},"settings":{"ico":"⚙️","lbl":"Einst."},"party_mode":{"ico":"🥳 Party-Modus","lbl":"Getränkekarte \u0026 Songwünsche freischalten"},"server_monitor":{"ico":"🖥️ Server-Monitor","lbl":"Live-Systemstatus in der App anzeigen"}},"local_addr":"192.168.178.103","local_url":"http:\/\/192.168.178.103\/mobile"}</script>
+<script type="application/json" id="cloud-sync-cfg">{"which":"handy","online_tv":true,"online_handy":true,"pages":{"index":true,"tabelle":true,"spielplan":true},"labels":{"index":{"ico":"⚽","lbl":"Spiel"},"tabelle":{"ico":"📊","lbl":"Tabelle"},"spielplan":{"ico":"📅","lbl":"Plan"},"tippspiel":{"ico":"🏆","lbl":"Tippspiel"},"fotos":{"ico":"📸","lbl":"Fotos"},"info":{"ico":"📞","lbl":"Info"},"settings":{"ico":"⚙️","lbl":"Einst."},"party_mode":{"ico":"🥳 Party-Modus","lbl":"Getränkekarte \u0026 Songwünsche freischalten"},"server_monitor":{"ico":"🖥️ Server-Monitor","lbl":"Live-Systemstatus in der App anzeigen"}},"local_addr":"192.168.2.10","local_url":"http:\/\/192.168.2.10\/mobile"}</script>
 </head>
 <body>
 <div id="cloud-badge">☁️ CLOUD VERSION</div>
@@ -35,7 +93,7 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
         <div id="runde" style="font-size:0.7rem; color:var(--mu); text-transform:uppercase; letter-spacing:2px;">AKTUELLES SPIEL</div>
         <div class="teams"><span id="t1">HEIM</span><span id="t2">GAST</span></div>
         <div class="score-num" id="sc">0:0</div>
-        <div style="color:#1ec96a; font-weight:bold; font-size:0.8rem;">● LIVE</div>
+        <div style="color:var(--gn); font-weight:bold; font-size:0.8rem;">● LIVE</div>
     </div>
   </div>
   <div class="panel" data-page="tabelle">
@@ -81,7 +139,7 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
 <nav class="nav" id="bottom-nav"></nav>
 <script>
 (function(){
-  var cfg = { pages: {}, labels: {} };
+  var cfg = { pages: {}, labels: {}, local_addr: '192.168.2.10', local_url: 'http://192.168.2.10/mobile' };
   try { var el = document.getElementById('cloud-sync-cfg'); if (el && el.textContent) cfg = JSON.parse(el.textContent); } catch (e) {}
   
   var P = cfg.pages || {};
@@ -91,10 +149,12 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
 
   Object.keys(P).forEach(function(key){
     if (!P[key]) return;
+    var data = L[key] || { ico: '🧩', lbl: key };
+    
     var b = document.createElement('button');
     b.type = 'button';
     b.className = 'nav-item' + (firstPanel ? ' active' : '');
-    b.textContent = L[key] || key;
+    b.innerHTML = '<span class="ico">' + data.ico + '</span><span class="lbl">' + data.lbl + '</span>';
     b.dataset.page = key;
     b.onclick = function(){
       nav.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
@@ -107,7 +167,6 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
     var p = document.querySelector('.panel[data-page="'+key+'"]');
     if (p && firstPanel) { p.classList.add('on'); firstPanel = false; }
     
-    // Falls Panel nicht existiert, Dummy-Panel erstellen
     if (!p) {
         var dp = document.createElement('div');
         dp.className = 'panel' + (firstPanel ? ' on' : '');
@@ -117,17 +176,24 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
         if (isLocal) {
             dp.innerHTML = '<div class="card">' +
                 '<div style="font-family:var(--F); color:var(--or); margin-bottom:15px; letter-spacing:1px;">📱 LOKALES WLAN ERFORDERLICH</div>' +
-                '<div style="background:rgba(59,130,246,0.1); border:1px solid var(--bl); border-radius:12px; padding:15px; font-size:.85rem; line-height:1.6;">' +
-                    '<p style="margin-top:0;">Diese Seite benötigt Zugriff auf den <strong>Turnier-Server vor Ort</strong>.</p>' +
-                    '<ol style="padding-left:20px; margin-bottom:0;">' +
-                        '<li>Verbinde dein Handy mit dem <strong>Turnier-WLAN</strong>.</li>' +
-                        '<li>Scanne den QR-Code am Aushang oder frage die Turnierleitung.</li>' +
-                        '<li>Rufe die <strong>lokale IP</strong> des Servers auf.</li>' +
-                    '</ol>' +
+                '<div style="background:rgba(59,130,246,0.1); border:1px solid #3b82f6; border-radius:12px; padding:15px; font-size:.85rem; line-height:1.6;">' +
+                    '<p style="margin-top:0;">Diese Seite benötigt Zugriff auf den <strong>Turnier-Server</strong> ('+cfg.local_addr+').</p>' +
+                    '<div style="display:flex; gap:15px; align-items:center; margin-bottom:15px;">' +
+                        '<div style="flex:0 0 80px; height:80px; background:#fff; padding:5px; border-radius:8px;">' +
+                            '<img src="https://api.qrserver.com/v1/create-qr-code/?size=70x70&data='+encodeURIComponent(cfg.local_url)+'" style="width:70px;height:70px;display:block;">' +
+                        '</div>' +
+                        '<ol style="padding-left:20px; margin:0; font-size:.75rem;">' +
+                            '<li>Mit <strong>Turnier-WLAN</strong> verbinden.</li>' +
+                            '<li>QR-Code links scannen.</li>' +
+                            '<li>Oder IP aufrufen: <strong>'+cfg.local_addr+'</strong></li>' +
+                        '</ol>' +
+                    '</div>' +
+                    '<a href="'+cfg.local_url+'" class="wifi-btn">JETZT LOKAL ÖFFNEN</a>' +
+                    '<p style="font-size:.65rem; color:var(--mu); text-align:center; margin-top:10px;">(Funktioniert nur, wenn du im WLAN bist!)</p>' +
                 '</div>' +
             '</div>';
         } else {
-            dp.innerHTML = '<div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">'+(L[key]||key)+'</div><p style="color:var(--mu); font-size:.8rem;">Diese Seite wird bald verfügbar sein.</p></div>';
+            dp.innerHTML = '<div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">'+data.lbl+'</div><p style="color:var(--mu); font-size:.8rem;">Diese Seite wird bald verfügbar sein.</p></div>';
         }
         document.getElementById('panels').appendChild(dp);
         if (firstPanel) firstPanel = false;
