@@ -186,70 +186,75 @@ window.onerror = function(msg, url, line) {
   rotate();
 
   function update() {
-    fetch('live.json?t=' + Date.now())
-      .then(function(r){ return r.json(); })
-      .then(function(d){
-        var ticker = document.getElementById('ticker-track');
-        if (ticker) ticker.textContent = '+++ ' + (d.event || 'TurnierOffline') + ' Cloud TV +++';
-        
-        if (d.spiel) {
-            document.getElementById('t1').textContent = d.spiel.t1name;
-            document.getElementById('t2').textContent = d.spiel.t2name;
-            document.getElementById('sc').textContent = d.spiel.tore1 + ':' + d.spiel.tore2;
-            document.getElementById('runde-title').textContent = d.spiel.runde || 'LIVE';
-            var st = document.getElementById('tv-stand-body');
-            if (st) st.innerHTML = '<div style="text-align:center;font-size:2.2rem">' + d.spiel.t1name + ' <strong style="color:#f0b830">' + d.spiel.tore1 + ':' + d.spiel.tore2 + '</strong> ' + d.spiel.t2name + '</div>';
-        }
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'live.json?t=' + (new Date().getTime()), true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            try {
+                var d = JSON.parse(xhr.responseText);
+                var ticker = document.getElementById('ticker-track');
+                if (ticker) ticker.textContent = '+++ ' + (d.event || 'TurnierOffline') + ' Cloud TV +++';
+                
+                if (d.spiel) {
+                    document.getElementById('t1').textContent = d.spiel.t1name || '';
+                    document.getElementById('t2').textContent = d.spiel.t2name || '';
+                    document.getElementById('sc').textContent = (d.spiel.tore1 != null) ? (d.spiel.tore1 + ':' + d.spiel.tore2) : '—';
+                    document.getElementById('runde-title').textContent = d.spiel.runde || 'LIVE';
+                    var st = document.getElementById('tv-stand-body');
+                    if (st) st.innerHTML = '<div style="text-align:center;font-size:2.2rem">' + (d.spiel.t1name||'') + ' <strong style="color:#f0b830">' + (d.spiel.tore1!=null?d.spiel.tore1+':'+d.spiel.tore2:'') + '</strong> ' + (d.spiel.t2name||'') + '</div>';
+                }
 
-        if (d.teams && Array.isArray(d.teams)) {
-            var tb = document.getElementById('tv-teams-body');
-            if (tb) tb.innerHTML = d.teams.map(function(t){ return '<div class="tv-row"><span>' + (t.name||'') + '</span></div>'; }).join('') || '—';
-        }
+                if (d.teams && Array.isArray(d.teams)) {
+                    var tb = document.getElementById('tv-teams-body');
+                    if (tb) tb.innerHTML = d.teams.map(function(t){ return '<div class="tv-row"><span>' + (t.name||'') + '</span></div>'; }).join('') || '—';
+                }
 
-        if (d.spielplan && Array.isArray(d.spielplan)) {
-            var pb = document.getElementById('tv-plan-body');
-            if (pb) pb.innerHTML = d.spielplan.slice(0, 30).map(function(s){
-              var n1 = s.t1name || s.team1 || '?', n2 = s.t2name || s.team2 || '?';
-              return '<div class="tv-row"><span>' + n1 + ' vs ' + n2 + '</span><span>' + (s.tore1!=null ? s.tore1+':'+s.tore2 : '') + '</span></div>';
-            }).join('') || '—';
-        }
+                if (d.spielplan && Array.isArray(d.spielplan)) {
+                    var pb = document.getElementById('tv-plan-body');
+                    if (pb) pb.innerHTML = d.spielplan.slice(0, 30).map(function(s){
+                      var n1 = s.t1name || s.team1 || '?', n2 = s.t2name || s.team2 || '?';
+                      return '<div class="tv-row"><span>' + n1 + ' vs ' + n2 + '</span><span>' + (s.tore1!=null ? s.tore1+':'+s.tore2 : '') + '</span></div>';
+                    }).join('') || '—';
+                }
 
-        if (d.tabelle) {
-            var sg = document.getElementById('tv-sieg-body');
-            var siegerBody = document.getElementById('tv-sieger-body');
-            var lines = [];
-            for (var g in d.tabelle) {
-                (d.tabelle[g]||[]).slice(0,3).forEach(function(t,i){ lines.push((i+1)+'. '+(t.name||'')+' ('+(t.pkt||0)+' Pkt)'); });
-            }
-            var html = lines.length ? lines.map(function(x){return '<div style="margin:8px 0">'+x+'</div>';}).join('') : '—';
-            if (sg) sg.innerHTML = html;
-            if (siegerBody) siegerBody.innerHTML = '<div style="font-size:2.5rem;color:var(--gd);margin-top:20px">' + html + '</div>';
-        }
+                if (d.tabelle) {
+                    var sg = document.getElementById('tv-sieg-body');
+                    var siegerBody = document.getElementById('tv-sieger-body');
+                    var lines = [];
+                    for (var g in d.tabelle) {
+                        (d.tabelle[g]||[]).slice(0,3).forEach(function(t,i){ lines.push((i+1)+'. '+(t.name||'')+' ('+(t.pkt||0)+' Pkt)'); });
+                    }
+                    var html = lines.length ? lines.map(function(x){return '<div style="margin:8px 0">'+x+'</div>';}).join('') : '—';
+                    if (sg) sg.innerHTML = html;
+                    if (siegerBody) siegerBody.innerHTML = '<div style="font-size:2.5rem;color:var(--gd);margin-top:20px">' + html + '</div>';
+                }
 
-        if (d.wlan) {
-            var qr = document.getElementById('tv-qr-body');
-            if (qr) qr.innerHTML = '<div style="background:#fff;padding:20px;display:inline-block;border-radius:15px;margin-bottom:20px;">' +
-                '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent('http://'+d.wlan.ip+'/mobile')+'" style="width:200px;height:200px;">' +
-                '</div><div style="font-size:1.8rem;">WLAN: <strong>'+d.wlan.ssid+'</strong><br>PASS: <strong>'+d.wlan.pw+'</strong></div>';
-        }
+                if (d.wlan) {
+                    var qr = document.getElementById('tv-qr-body');
+                    if (qr) qr.innerHTML = '<div style="background:#fff;padding:20px;display:inline-block;border-radius:15px;margin-bottom:20px;">' +
+                        '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent('http://'+d.wlan.ip+'/mobile')+'" style="width:200px;height:200px;">' +
+                        '</div><div style="font-size:1.8rem;">WLAN: <strong>'+d.wlan.ssid+'</strong><br>PASS: <strong>'+d.wlan.pw+'</strong></div>';
+                }
 
-        if (d.stats) {
-            var set = function(id, val){ var el = document.getElementById(id); if(el) el.textContent = val; };
-            set('sm-cpu', (d.stats.cpu || 0) + '%');
-            set('sm-ram', (d.stats.ram || 0) + '%');
-            set('sm-ssd', (d.stats.ssd || 0) + '%');
-            set('sm-bat', (d.stats.bat || 0) + '%');
-        }
+                if (d.stats) {
+                    var set = function(id, val){ var el = document.getElementById(id); if(el) el.textContent = val; };
+                    set('sm-cpu', (d.stats.cpu || 0) + '%');
+                    set('sm-ram', (d.stats.ram || 0) + '%');
+                    set('sm-ssd', (d.stats.ssd || 0) + '%');
+                    set('sm-bat', (d.stats.bat || 0) + '%');
+                }
 
-        if (d.colors) {
-            var c = d.colors;
-            document.documentElement.style.setProperty('--or', c.ak);
-            document.documentElement.style.setProperty('--bg', c.bg);
+                if (d.colors) {
+                    var c = d.colors;
+                    document.documentElement.style.setProperty('--or', c.ak);
+                    document.documentElement.style.setProperty('--bg', c.bg);
+                }
+                var loader = document.getElementById('preloader');
+                if (loader) loader.style.display = 'none';
+            } catch(e) {}
         }
-        var loader = document.getElementById('preloader');
-        if (loader) loader.style.display = 'none';
-      })
-      .catch(function(e){});
+    };
+    xhr.send();
   }
   setInterval(update, 10000); update();
   setInterval(function(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE'); }, 1000);
