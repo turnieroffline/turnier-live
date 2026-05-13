@@ -24,7 +24,7 @@ body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:
 #ticker-track { white-space:nowrap; color: var(--accent); font-family: var(--F); font-size: 3.5rem; animation: tick 30s linear infinite; padding-left: 100%; }
 @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-200%); } }
 </style>
-<script type="application/json" id="cloud-sync-cfg">{"which":"tv","online_tv":true,"online_handy":true,"pages":{"spielstand":true,"teams":true,"spielplan":true,"live":true,"siegerehrung":true}}</script>
+<script type="application/json" id="cloud-sync-cfg">{"which":"tv","online_tv":true,"online_handy":true,"pages":{"tabelle":true,"spielplan":true,"team":true},"labels":{"tabelle":"📊 Tabelle","spielplan":"📅 Spielplan","team":"👥 Teams","tippspiel":"🎲 Tippspiel","bilder":"📸 Fotos","sieger":"🥇 Sieger","spielregeln":"📜 Regeln","verbinden":"📱 QR-Code","party_tv":"🎉 Party-Wall","server_monitor":"🖥️ Server-Monitor"}}</script>
 </head>
 <body>
 <div id="tv-header">
@@ -57,16 +57,52 @@ body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:
         <div class="tv-sub">SIEGEREHRUNG</div>
         <div id="tv-sieg-body" class="tv-list" style="text-align:center;font-size:1.8rem;">Top-Plätze nach Punkten.</div>
     </section>
+    <section class="tv-sec" data-page="server_monitor">
+        <div class="tv-sub">SERVER-STATUS</div>
+        <div id="sm-grid" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:30px; max-width:1200px; margin:40px auto;">
+            <div style="background:rgba(255,255,255,0.05); padding:30px; border-radius:20px; border-top:6px solid #3b82f6;">
+                <div style="font-size:1.2rem; color:var(--mu); margin-bottom:10px;">CPU</div>
+                <div id="sm-cpu" style="font-size:3.5rem; font-family:var(--F); color:#3b82f6;">--%</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); padding:30px; border-radius:20px; border-top:6px solid #a855f7;">
+                <div style="font-size:1.2rem; color:var(--mu); margin-bottom:10px;">RAM</div>
+                <div id="sm-ram" style="font-size:3.5rem; font-family:var(--F); color:#a855f7;">--%</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); padding:30px; border-radius:20px; border-top:6px solid #ef4444;">
+                <div style="font-size:1.2rem; color:var(--mu); margin-bottom:10px;">SSD</div>
+                <div id="sm-ssd" style="font-size:3.5rem; font-family:var(--F); color:#ef4444;">--%</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); padding:30px; border-radius:20px; border-top:6px solid #22c55e;">
+                <div style="font-size:1.2rem; color:var(--mu); margin-bottom:10px;">AKKU</div>
+                <div id="sm-bat" style="font-size:3.5rem; font-family:var(--F); color:#22c55e;">--%</div>
+            </div>
+        </div>
+    </section>
 </div>
-<div id="tv-footer"><div id="ticker-label">INFO</div><div id="ticker-track">+++ TURNIEROFFLINE +++</div></div>
+<div id="tv-footer"><div id="ticker-label">INFO</div><div id="ticker-track">+++ TURNIEROFFLINE CLOUD TV +++</div></div>
 <script>
 (function(){
-  var cfg = { pages: { spielstand:true, teams:true, spielplan:true, live:true, siegerehrung:true } };
+  var cfg = { pages: {} };
   try { var el = document.getElementById('cloud-sync-cfg'); if (el && el.textContent) cfg = JSON.parse(el.textContent); } catch (e) {}
   var P = cfg.pages || {};
-  document.querySelectorAll('.tv-sec').forEach(function(sec){
-    if (P[sec.getAttribute('data-page')]) sec.classList.add('on');
-  });
+  var secs = document.querySelectorAll('.tv-sec');
+  var activeKeys = Object.keys(P).filter(function(k){ return P[k]; });
+  var currentIndex = 0;
+
+  function rotate() {
+      if (!activeKeys.length) return;
+      secs.forEach(function(s){ s.classList.remove('on'); });
+      var key = activeKeys[currentIndex];
+      var sec = document.querySelector('.tv-sec[data-page="'+key+'"]');
+      if (sec) {
+          sec.classList.add('on');
+          document.getElementById('dynamic-title').textContent = (cfg.labels && cfg.labels[key]) ? cfg.labels[key].split(' ')[1] : key.toUpperCase();
+      }
+      currentIndex = (currentIndex + 1) % activeKeys.length;
+  }
+  
+  if (activeKeys.length > 1) setInterval(rotate, 8000);
+  rotate();
 })();
 async function update() {
     try {
@@ -101,6 +137,14 @@ async function update() {
                 }
                 sg.innerHTML = lines.length ? lines.map(function(x){return '<div style="margin:8px 0">'+x+'</div>';}).join('') : '—';
             }
+        }
+        if (d.server_monitor) {
+            var sm = d.server_monitor;
+            var set = function(id, val){ var el = document.getElementById(id); if(el) el.textContent = val; };
+            set('sm-cpu', sm.cpu.pct + '%');
+            set('sm-ram', sm.ram.pct + '%');
+            set('sm-ssd', sm.ssd.pct + '%');
+            set('sm-bat', (sm.battery.pct || 0) + '%');
         }
     } catch(e) {}
 }
