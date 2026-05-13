@@ -1,7 +1,7 @@
 {
     "event": "TurnierOffline",
-    "updated": "16:07:11",
-    "ts": 1778681231,
+    "updated": "16:12:03",
+    "ts": 1778681523,
     "spiel": {
         "id": 359,
         "team1_id": 2,
@@ -249,12 +249,12 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 36,
+        "cpu_percent": 6,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 5425,
+            "used_mb": 5222,
             "total_mb": 7675,
-            "percent": 71
+            "percent": 68
         },
         "disk": {
             "used_gb": 45.2,
@@ -263,10 +263,10 @@
         },
         "battery": {
             "present": true,
-            "percent": 92,
+            "percent": 93,
             "status": "Lädt",
-            "time_label": "1:06 h"
+            "time_label": "1:03 h"
         },
-        "ts": 1778681231
+        "ts": 1778681523
     }
 }
