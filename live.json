@@ -12,10 +12,10 @@
         "ip": "192.168.2.10"
     },
     "stats": {
-        "cpu": 19,
-        "ram": 86,
+        "cpu": 9,
+        "ram": 85,
         "ssd": 51,
-        "bat": 24
+        "bat": 23
     },
     "legal": {
         "org": "",
@@ -25,8 +25,8 @@
         "web": "",
         "boss": ""
     },
-    "updated": "19:56:01",
-    "ts": 1778694961,
+    "updated": "19:58:02",
+    "ts": 1778695082,
     "spiel": {
         "id": 359,
         "team1_id": 2,
@@ -274,12 +274,12 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 24,
+        "cpu_percent": 18,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 6588,
+            "used_mb": 6528,
             "total_mb": 7675,
-            "percent": 86
+            "percent": 85
         },
         "disk": {
             "used_gb": 45.6,
@@ -288,10 +288,10 @@
         },
         "battery": {
             "present": true,
-            "percent": 24,
+            "percent": 23,
             "status": "Entlädt",
-            "time_label": "~37 Min"
+            "time_label": "~25 Min"
         },
-        "ts": 1778694961
+        "ts": 1778695082
     }
 }
