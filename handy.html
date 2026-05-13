@@ -238,11 +238,10 @@ window.onerror = function(msg, url, line) {
       if (targetBtn) targetBtn.click();
   }
 
-  async function update() {
-    try {
-        const r = await fetch('live.json?t=' + Date.now());
-        const d = await r.json();
-        
+  function update() {
+    fetch('live.json?t=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(d){
         var st = document.getElementById('sync-status');
         if (st) st.textContent = 'Letzter Abgleich: ' + new Date().toLocaleTimeString('de-DE');
 
@@ -296,9 +295,9 @@ window.onerror = function(msg, url, line) {
             document.documentElement.style.setProperty('--or', d.colors.ak);
             document.documentElement.style.setProperty('--bg', d.colors.md);
         }
-        // Rebuild nav if WiFi info changed
         buildNav(d);
-    } catch(e) {}
+      })
+      .catch(function(e){});
   }
   setInterval(update, 10000); update();
 })();
