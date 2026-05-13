@@ -10,8 +10,16 @@
         "ssid": "@TurnierOffline",
         "pw": ""
     },
-    "updated": "16:56:01",
-    "ts": 1778684161,
+    "legal": {
+        "org": "",
+        "place": "",
+        "email": "",
+        "tel": "",
+        "web": "",
+        "boss": ""
+    },
+    "updated": "16:58:01",
+    "ts": 1778684281,
     "spiel": {
         "id": 359,
         "team1_id": 2,
@@ -259,12 +267,12 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 12,
+        "cpu_percent": 7,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 5873,
+            "used_mb": 5749,
             "total_mb": 7675,
-            "percent": 77
+            "percent": 75
         },
         "disk": {
             "used_gb": 45.3,
@@ -277,6 +285,6 @@
             "status": "Voll",
             "time_label": "—"
         },
-        "ts": 1778684161
+        "ts": 1778684281
     }
 }
