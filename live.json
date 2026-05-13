@@ -9,13 +9,13 @@
     "wlan": {
         "ssid": "@TurnierOffline",
         "pw": "",
-        "ip": "127.0.0.1"
+        "ip": "192.168.2.10"
     },
     "stats": {
-        "cpu": 16,
-        "ram": 85,
+        "cpu": 26,
+        "ram": 87,
         "ssd": 51,
-        "bat": 51
+        "bat": 49
     },
     "legal": {
         "org": "",
@@ -25,8 +25,8 @@
         "web": "",
         "boss": ""
     },
-    "updated": "19:20:14",
-    "ts": 1778692814,
+    "updated": "19:22:01",
+    "ts": 1778692921,
     "spiel": {
         "id": 359,
         "team1_id": 2,
@@ -274,12 +274,12 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 22,
+        "cpu_percent": 6,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 6532,
+            "used_mb": 6682,
             "total_mb": 7675,
-            "percent": 85
+            "percent": 87
         },
         "disk": {
             "used_gb": 45.5,
@@ -288,10 +288,10 @@
         },
         "battery": {
             "present": true,
-            "percent": 51,
+            "percent": 49,
             "status": "Entlädt",
             "time_label": "1:24 h"
         },
-        "ts": 1778692814
+        "ts": 1778692922
     }
 }
