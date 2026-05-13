@@ -102,7 +102,23 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
         var dp = document.createElement('div');
         dp.className = 'panel' + (firstPanel ? ' on' : '');
         dp.dataset.page = key;
-        dp.innerHTML = '<div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">'+(L[key]||key)+'</div><p style="color:var(--mu); font-size:.8rem;">Diese Seite wird bald verfügbar sein.</p></div>';
+        
+        var isLocal = key.indexOf('settings') !== -1 || key.indexOf('admin') !== -1 || key === 'verbinden';
+        if (isLocal) {
+            dp.innerHTML = '<div class="card">' +
+                '<div style="font-family:var(--F); color:var(--or); margin-bottom:15px; letter-spacing:1px;">📱 LOKALES WLAN ERFORDERLICH</div>' +
+                '<div style="background:rgba(59,130,246,0.1); border:1px solid var(--bl); border-radius:12px; padding:15px; font-size:.85rem; line-height:1.6;">' +
+                    '<p style="margin-top:0;">Diese Seite benötigt Zugriff auf den <strong>Turnier-Server vor Ort</strong>.</p>' +
+                    '<ol style="padding-left:20px; margin-bottom:0;">' +
+                        '<li>Verbinde dein Handy mit dem <strong>Turnier-WLAN</strong>.</li>' +
+                        '<li>Scanne den QR-Code am Aushang oder frage die Turnierleitung.</li>' +
+                        '<li>Rufe die <strong>lokale IP</strong> des Servers auf.</li>' +
+                    '</ol>' +
+                '</div>' +
+            '</div>';
+        } else {
+            dp.innerHTML = '<div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">'+(L[key]||key)+'</div><p style="color:var(--mu); font-size:.8rem;">Diese Seite wird bald verfügbar sein.</p></div>';
+        }
         document.getElementById('panels').appendChild(dp);
         if (firstPanel) firstPanel = false;
     }
