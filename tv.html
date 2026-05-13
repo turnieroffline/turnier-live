@@ -57,7 +57,7 @@ body {
 .tv-legal { position: fixed; bottom: 110px; right: 20px; font-size: 0.6rem; color: var(--mu); z-index: 1000; display:flex; gap:20px; }
 .tv-legal a { color: var(--mu); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; }
 </style>
-<script type="application/json" id="cloud-sync-cfg">{"which":"tv","online_tv":true,"online_handy":true,"pages":{"tabelle":true,"spielplan":true,"team":true,"bilder":true,"sieger":true,"verbinden":true,"tippspiel":true,"spielregeln":true,"party_tv":true,"server_monitor":true},"labels":{"tabelle":"📊 Tabelle","spielplan":"📅 Spielplan","team":"👥 Teams","tippspiel":"🎲 Tippspiel","bilder":"📸 Fotos","sieger":"🥇 Sieger","spielregeln":"📜 Regeln","verbinden":"📱 QR-Code","party_tv":"🎉 Party-Wall","server_monitor":"🖥️ Server-Monitor"},"local_addr":"192.168.2.10","local_url":"http:\/\/192.168.2.10\/mobile"}</script>
+<script type="application/json" id="cloud-sync-cfg">{"which":"tv","online_tv":true,"online_handy":true,"pages":{"tabelle":true,"spielplan":true,"team":true,"bilder":true,"sieger":true,"verbinden":true,"tippspiel":true,"spielregeln":true,"party_tv":true,"server_monitor":true},"labels":{"tabelle":"📊 Tabelle","spielplan":"📅 Spielplan","team":"👥 Teams","tippspiel":"🎲 Tippspiel","bilder":"📸 Fotos","sieger":"🥇 Sieger","spielregeln":"📜 Regeln","verbinden":"📱 QR-Code","party_tv":"🎉 Party-Wall","server_monitor":"🖥️ Server-Monitor"},"local_addr":"127.0.0.1","local_url":"http:\/\/127.0.0.1\/mobile"}</script>
 </head>
 <body>
 <div id="cloud-badge">☁️ CLOUD VERSION</div>
@@ -87,9 +87,34 @@ body {
         <div class="tv-sub">SPIELPLAN</div>
         <div id="tv-plan-body" class="tv-list">…</div>
     </section>
-    <section class="tv-sec" data-page="siegerehrung">
-        <div class="tv-sub">SIEGEREHRUNG</div>
-        <div id="tv-sieg-body" class="tv-list" style="text-align:center;font-size:1.8rem;">Top-Plätze nach Punkten.</div>
+    <section class="tv-sec" data-page="bilder">
+        <div class="tv-sub">FOTOS</div>
+        <div id="tv-fotos-body" class="tv-list" style="display:flex;flex-wrap:wrap;gap:15px;justify-content:center;">…</div>
+    </section>
+    <section class="tv-sec" data-page="sieger">
+        <div class="tv-sub">SIEGER</div>
+        <div id="tv-sieger-body" class="tv-list" style="text-align:center;">…</div>
+    </section>
+    <section class="tv-sec" data-page="verbinden">
+        <div class="tv-sub">VERBINDEN</div>
+        <div id="tv-qr-body" class="tv-list" style="text-align:center;">…</div>
+    </section>
+    <section class="tv-sec" data-page="tippspiel">
+        <div class="tv-sub">TIPPSPIEL</div>
+        <div id="tv-tipp-body" class="tv-list">…</div>
+    </section>
+    <section class="tv-sec" data-page="spielregeln">
+        <div class="tv-sub">REGELN</div>
+        <div id="tv-regeln-body" class="tv-list" style="font-size:1.2rem;">…</div>
+    </section>
+    <section class="tv-sec" data-page="server_monitor">
+        <div class="tv-sub">SYSTEM STATUS</div>
+        <div id="tv-sm-body" class="tv-list" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div class="card">CPU: <span id="sm-cpu">…</span></div>
+            <div class="card">RAM: <span id="sm-ram">…</span></div>
+            <div class="card">SSD: <span id="sm-ssd">…</span></div>
+            <div class="card">BAT: <span id="sm-bat">…</span></div>
+        </div>
     </section>
     
 <!-- Panel: server_monitor -->
@@ -192,13 +217,29 @@ window.onerror = function(msg, url, line) {
 
         if (d.tabelle) {
             var sg = document.getElementById('tv-sieg-body');
-            if (sg) {
-                var lines = [];
-                for (var g in d.tabelle) {
-                    (d.tabelle[g]||[]).slice(0,3).forEach(function(t,i){ lines.push((i+1)+'. '+(t.name||'')+' ('+(t.pkt||0)+' Pkt)'); });
-                }
-                sg.innerHTML = lines.length ? lines.map(function(x){return '<div style="margin:8px 0">'+x+'</div>';}).join('') : '—';
+            var siegerBody = document.getElementById('tv-sieger-body');
+            var lines = [];
+            for (var g in d.tabelle) {
+                (d.tabelle[g]||[]).slice(0,3).forEach(function(t,i){ lines.push((i+1)+'. '+(t.name||'')+' ('+(t.pkt||0)+' Pkt)'); });
             }
+            var html = lines.length ? lines.map(function(x){return '<div style="margin:8px 0">'+x+'</div>';}).join('') : '—';
+            if (sg) sg.innerHTML = html;
+            if (siegerBody) siegerBody.innerHTML = '<div style="font-size:2.5rem;color:var(--gd);margin-top:20px">' + html + '</div>';
+        }
+
+        if (d.wlan) {
+            var qr = document.getElementById('tv-qr-body');
+            if (qr) qr.innerHTML = '<div style="background:#fff;padding:20px;display:inline-block;border-radius:15px;margin-bottom:20px;">' +
+                '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent('http://'+d.wlan.ip+'/mobile')+'" style="width:200px;height:200px;">' +
+                '</div><div style="font-size:1.8rem;">WLAN: <strong>'+d.wlan.ssid+'</strong><br>PASS: <strong>'+d.wlan.pw+'</strong></div>';
+        }
+
+        if (d.stats) {
+            var set = function(id, val){ var el = document.getElementById(id); if(el) el.textContent = val; };
+            set('sm-cpu', (d.stats.cpu || 0) + '%');
+            set('sm-ram', (d.stats.ram || 0) + '%');
+            set('sm-ssd', (d.stats.ssd || 0) + '%');
+            set('sm-bat', (d.stats.bat || 0) + '%');
         }
 
         if (d.colors) {
