@@ -6,40 +6,73 @@
 <title>TurnierOffline Live</title>
 <style>
 :root { --or: #ff6b00; --bg: #08090e; --s1: #0e1018; --s2: #141620; --s3: #1e2232; --tx: #dde3f0; --mu: #5c6880; --F: 'Impact', sans-serif; }
-body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--tx); margin:0; padding-bottom: 80px; }
-.hdr { position: sticky; top: 0; background: rgba(14,16,24,0.9); backdrop-filter: blur(10px); padding: 15px; border-bottom: 1px solid var(--or); text-align: center; font-family: var(--F); letter-spacing: 2px; color: var(--or); }
+body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--tx); margin:0; padding-bottom: 88px; }
+.hdr { position: sticky; top: 0; background: rgba(14,16,24,0.95); backdrop-filter: blur(10px); padding: 15px; border-bottom: 1px solid var(--or); text-align: center; font-family: var(--F); letter-spacing: 2px; color: var(--or); }
 .card { background: var(--s1); border: 1px solid var(--s3); border-radius: 16px; padding: 20px; margin: 15px; }
 .score-num { font-family: var(--F); font-size: 3.5rem; color: #f0b830; letter-spacing: 10px; margin: 10px 0; }
 .teams { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; }
 .tab-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; display: flex; border-top: 1px solid var(--s3); }
-.nav-item { flex: 1; padding: 15px; text-align: center; color: var(--mu); text-decoration: none; font-size: 0.8rem; }
-.nav-item.active { color: var(--or); }
+.nav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; display: flex; border-top: 1px solid var(--s3); flex-wrap: wrap; }
+.nav-item { flex: 1; min-width: 22%; padding: 14px 6px; text-align: center; color: var(--mu); text-decoration: none; font-size: 0.72rem; border: none; background: none; cursor: pointer; }
+.nav-item.active { color: var(--or); font-weight: 700; }
+.panel { display: none; }
+.panel.on { display: block; }
 </style>
+<script type="application/json" id="cloud-sync-cfg">{"which":"handy","online_tv":true,"online_handy":true,"pages":{"spielstand":true,"teams":true,"spielplan":true,"live":true,"siegerehrung":true}}</script>
 </head>
 <body>
 <header class="hdr" id="event-name">TURNIEROFFLINE</header>
-<div id="content">
+<div id="panels">
+  <div class="panel" data-page="live">
     <div class="card" style="text-align:center">
         <div id="runde" style="font-size:0.7rem; color:var(--mu); text-transform:uppercase; letter-spacing:2px;">AKTUELLES SPIEL</div>
-        <div class="teams">
-            <span id="t1">HEIM</span>
-            <span id="t2">GAST</span>
-        </div>
+        <div class="teams"><span id="t1">HEIM</span><span id="t2">GAST</span></div>
         <div class="score-num" id="sc">0:0</div>
         <div style="color:#1ec96a; font-weight:bold; font-size:0.8rem;">● LIVE</div>
     </div>
-    <div class="card">
-        <div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">TABELLE</div>
-        <div id="tabelle-list">Lade Daten...</div>
-    </div>
+  </div>
+  <div class="panel" data-page="spielstand">
+    <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">SPIELSTAND</div><div id="h-stand">…</div></div>
+  </div>
+  <div class="panel" data-page="teams">
+    <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">TEAMS</div><div id="h-teams">…</div></div>
+  </div>
+  <div class="panel" data-page="spielplan">
+    <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">SPIELPLAN</div><div id="h-plan">…</div></div>
+  </div>
+  <div class="panel" data-page="siegerehrung">
+    <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">SIEGEREHRUNG</div><div id="h-sieg">Top-Plätze nach Punkten.</div></div>
+  </div>
 </div>
-<nav class="nav">
-    <a href="#" class="nav-item active">⚽ SPIEL</a>
-    <a href="#" class="nav-item">📊 TABELLE</a>
-    <a href="#" class="nav-item">📅 PLAN</a>
-</nav>
+<nav class="nav" id="bottom-nav"></nav>
 <script>
+(function(){
+  var order = ['live','spielstand','teams','spielplan','siegerehrung'];
+  var labels = { live:'⚽ Live', spielstand:'📌 Stand', teams:'👥 Teams', spielplan:'📅 Plan', siegerehrung:'🏆 Sieger' };
+  var cfg = { pages: { spielstand:true, teams:true, spielplan:true, live:true, siegerehrung:true } };
+  try { var el = document.getElementById('cloud-sync-cfg'); if (el && el.textContent) cfg = JSON.parse(el.textContent); } catch (e) {}
+  var P = cfg.pages || {};
+  var nav = document.getElementById('bottom-nav');
+  var firstPanel = true;
+  order.forEach(function(key){
+    if (!P[key]) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'nav-item' + (firstPanel ? ' active' : '');
+    b.textContent = labels[key] || key;
+    b.dataset.page = key;
+    b.onclick = function(){
+      nav.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){
+        p.classList.toggle('on', p.getAttribute('data-page') === key);
+      });
+    };
+    nav.appendChild(b);
+    var p = document.querySelector('.panel[data-page="'+key+'"]');
+    if (p && firstPanel) { p.classList.add('on'); firstPanel = false; }
+  });
+})();
 async function update() {
     try {
         const r = await fetch('live.json?t=' + Date.now());
@@ -50,16 +83,28 @@ async function update() {
             document.getElementById('t2').textContent = d.spiel.t2name;
             document.getElementById('sc').textContent = d.spiel.tore1 + ':' + d.spiel.tore2;
             document.getElementById('runde').textContent = d.spiel.runde || 'LIVE';
+            var hs = document.getElementById('h-stand');
+            if (hs) hs.innerHTML = '<div style="text-align:center;font-size:1.2rem">' + d.spiel.t1name + ' <strong style="color:#f0b830">' + d.spiel.tore1 + ':' + d.spiel.tore2 + '</strong> ' + d.spiel.t2name + '</div>';
+        }
+        if (d.teams && Array.isArray(d.teams)) {
+            var ht = document.getElementById('h-teams');
+            if (ht) ht.innerHTML = d.teams.map(function(t){ return '<div class="tab-row"><span>'+(t.name||'')+'</span></div>'; }).join('') || '—';
+        }
+        if (d.spielplan && Array.isArray(d.spielplan)) {
+            var hp = document.getElementById('h-plan');
+            if (hp) hp.innerHTML = d.spielplan.slice(0,40).map(function(s){
+              return '<div class="tab-row"><span>'+(s.t1name||'?')+' vs '+(s.t2name||'?')+'</span><span>'+(s.tore1!=null?s.tore1+':'+s.tore2:'')+'</span></div>';
+            }).join('') || '—';
         }
         if (d.tabelle) {
-            let html = '';
-            for (let g in d.tabelle) {
-                html += `<div style="font-size:0.7rem; margin:10px 0 5px; color:var(--mu)">GRUPPE ${g}</div>`;
-                d.tabelle[g].forEach((t, i) => {
-                    html += `<div class="tab-row"><span>${i+1}. ${t.name}</span><span>${t.pkt} Pkt</span></div>`;
-                });
+            var hg = document.getElementById('h-sieg');
+            if (hg) {
+                var lines = [];
+                for (var g in d.tabelle) {
+                    (d.tabelle[g]||[]).slice(0,5).forEach(function(t,i){ lines.push((i+1)+'. '+(t.name||'')+' — '+(t.pkt||0)+' Pkt'); });
+                }
+                hg.innerHTML = lines.length ? lines.map(function(x){return '<div class="tab-row"><span>'+x+'</span></div>';}).join('') : '—';
             }
-            document.getElementById('tabelle-list').innerHTML = html;
         }
     } catch(e) {}
 }
