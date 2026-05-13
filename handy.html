@@ -115,9 +115,9 @@ body {
   <div class="panel on" data-page="home">
     <div class="card" style="text-align:center">
         <div id="runde" style="font-size:0.7rem; color:var(--mu); text-transform:uppercase; letter-spacing:2px;">WILLKOMMEN</div>
-        <div class="teams"><span id="t1">LADE DATEN...</span><span id="t2"></span></div>
+        <div class="teams"><span id="t1">VERBINDE...</span><span id="t2"></span></div>
         <div class="score-num" id="sc">…</div>
-        <div style="color:var(--mu); font-size:0.8rem; margin-top:10px;">Bitte warten, Daten werden synchronisiert...</div>
+        <div id="sync-status" style="color:var(--mu); font-size:0.6rem; margin-top:10px; border-top:1px solid rgba(255,255,255,0.05); padding-top:8px;">Suche Live-Server...</div>
     </div>
   </div>
   
@@ -242,6 +242,10 @@ window.onerror = function(msg, url, line) {
     try {
         const r = await fetch('live.json?t=' + Date.now());
         const d = await r.json();
+        
+        var st = document.getElementById('sync-status');
+        if (st) st.textContent = 'Letzter Abgleich: ' + new Date().toLocaleTimeString('de-DE');
+
         if (d.event) document.getElementById('event-name').textContent = d.event;
         
         if (d.legal) {
