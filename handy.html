@@ -98,7 +98,7 @@ body {
 .legal-p { font-size: 0.75rem; color: var(--mu2); line-height: 1.6; margin-bottom: 12px; }
 .legal-h3 { font-family: var(--F); color: var(--or); font-size: 0.9rem; margin: 15px 0 5px; letter-spacing: 1px; }
 </style>
-<script type="application/json" id="cloud-sync-cfg">{"which":"handy","online_tv":true,"online_handy":true,"pages":{"index":true,"tabelle":true,"spielplan":true,"tippspiel":true,"fotos":true,"info":true,"settings":true,"party_mode":true,"server_monitor":true},"labels":{"index":{"ico":"⚽","lbl":"Spiel"},"tabelle":{"ico":"📊","lbl":"Tabelle"},"spielplan":{"ico":"📅","lbl":"Plan"},"tippspiel":{"ico":"🏆","lbl":"Tippspiel"},"fotos":{"ico":"📸","lbl":"Fotos"},"info":{"ico":"📞","lbl":"Info"},"settings":{"ico":"⚙️","lbl":"Einst."},"party_mode":{"ico":"🥳 Party-Modus","lbl":"Getränkekarte \u0026 Songwünsche freischalten"},"server_monitor":{"ico":"🖥️ Server-Monitor","lbl":"Live-Systemstatus in der App anzeigen"}},"local_addr":"127.0.0.1","local_url":"http:\/\/127.0.0.1\/mobile"}</script>
+<script type="application/json" id="cloud-sync-cfg">{"which":"handy","online_tv":true,"online_handy":true,"pages":{"index":true,"tabelle":true,"spielplan":true,"tippspiel":true,"fotos":true,"info":true,"settings":true,"party_mode":true,"server_monitor":true},"labels":{"index":{"ico":"⚽","lbl":"Spiel"},"tabelle":{"ico":"📊","lbl":"Tabelle"},"spielplan":{"ico":"📅","lbl":"Plan"},"tippspiel":{"ico":"🏆","lbl":"Tippspiel"},"fotos":{"ico":"📸","lbl":"Fotos"},"info":{"ico":"📞","lbl":"Info"},"settings":{"ico":"⚙️","lbl":"Einst."},"party_mode":{"ico":"🥳 Party-Modus","lbl":"Getränkekarte \u0026 Songwünsche freischalten"},"server_monitor":{"ico":"🖥️ Server-Monitor","lbl":"Live-Systemstatus in der App anzeigen"}},"local_addr":"192.168.2.10","local_url":"http:\/\/192.168.2.10\/mobile"}</script>
 </head>
 <body>
 <div id="cloud-badge">☁️ CLOUD VERSION</div>
@@ -159,17 +159,18 @@ window.onerror = function(msg, url, line) {
 
   function buildNav(d) {
     nav.innerHTML = '';
-    var keys = Object.keys(mandatory).concat(Object.keys(P).filter(k => P[k] && !mandatory[k]));
+    var keys = Object.keys(mandatory).concat(Object.keys(P).filter(function(k){ return P[k] && !mandatory[k]; }));
     
     keys.forEach(function(key, i){
         var data = L[key] || mandatory[key] || { ico: '🧩', lbl: key };
         var b = document.createElement('button');
         b.className = 'nav-item' + (i === 0 ? ' active' : '');
+        b.dataset.page = key;
         b.innerHTML = '<span class="ico">' + data.ico + '</span><span class="lbl">' + data.lbl + '</span>';
         b.onclick = function(){
-            nav.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+            nav.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
             b.classList.add('active');
-            document.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.getAttribute('data-page') === key));
+            document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-page') === key); });
         };
         nav.appendChild(b);
 
@@ -259,17 +260,17 @@ window.onerror = function(msg, url, line) {
         
         if (d.teams) {
             var ht = document.getElementById('h-teams');
-            if (ht) ht.innerHTML = d.teams.map(t => '<div class="tab-row"><span>'+(t.name||'')+'</span></div>').join('');
+            if (ht) ht.innerHTML = d.teams.map(function(t){ return '<div class="tab-row"><span>'+(t.name||'')+'</span></div>'; }).join('');
         }
         if (d.spielplan) {
             var hp = document.getElementById('h-plan');
-            if (hp) hp.innerHTML = d.spielplan.slice(0,40).map(s => '<div class="tab-row"><span>'+(s.t1name||'?')+' vs '+(s.t2name||'?')+'</span><span>'+(s.tore1!=null?s.tore1+':'+s.tore2:'')+'</span></div>').join('');
+            if (hp) hp.innerHTML = d.spielplan.slice(0,40).map(function(s){ return '<div class="tab-row"><span>'+(s.t1name||'?')+' vs '+(s.t2name||'?')+'</span><span>'+(s.tore1!=null?s.tore1+':'+s.tore2:'')+'</span></div>'; }).join('');
         }
         if (d.tabelle) {
             var hg = document.getElementById('h-sieg');
             if (hg) {
                 var lines = [];
-                for (var g in d.tabelle) (d.tabelle[g]||[]).slice(0,5).forEach((t,i) => lines.push('<div class="tab-row"><span>'+(i+1)+'. '+(t.name||'')+'</span><span>'+(t.pkt||0)+' Pkt</span></div>'));
+                for (var g in d.tabelle) (d.tabelle[g]||[]).slice(0,5).forEach(function(t,i){ lines.push('<div class="tab-row"><span>'+(i+1)+'. '+(t.name||'')+'</span><span>'+(t.pkt||0)+' Pkt</span></div>'); });
                 hg.innerHTML = lines.join('');
             }
         }
