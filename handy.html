@@ -98,7 +98,7 @@ body {
 .legal-p { font-size: 0.75rem; color: var(--mu2); line-height: 1.6; margin-bottom: 12px; }
 .legal-h3 { font-family: var(--F); color: var(--or); font-size: 0.9rem; margin: 15px 0 5px; letter-spacing: 1px; }
 </style>
-<script type="application/json" id="cloud-sync-cfg">{"which":"handy","online_tv":true,"online_handy":true,"pages":{"index":true,"tabelle":true,"spielplan":true,"tippspiel":true,"fotos":true,"info":true,"settings":true,"party_mode":true,"server_monitor":true},"labels":{"index":{"ico":"⚽","lbl":"Spiel"},"tabelle":{"ico":"📊","lbl":"Tabelle"},"spielplan":{"ico":"📅","lbl":"Plan"},"tippspiel":{"ico":"🏆","lbl":"Tippspiel"},"fotos":{"ico":"📸","lbl":"Fotos"},"info":{"ico":"📞","lbl":"Info"},"settings":{"ico":"⚙️","lbl":"Einst."},"party_mode":{"ico":"🥳 Party-Modus","lbl":"Getränkekarte \u0026 Songwünsche freischalten"},"server_monitor":{"ico":"🖥️ Server-Monitor","lbl":"Live-Systemstatus in der App anzeigen"}},"local_addr":"192.168.2.10","local_url":"http:\/\/192.168.2.10\/mobile"}</script>
+<script type="application/json" id="cloud-sync-cfg">{"which":"handy","online_tv":true,"online_handy":true,"pages":{"index":true,"tabelle":true,"spielplan":true,"tippspiel":true,"fotos":true,"info":true,"settings":true,"party_mode":true,"server_monitor":true},"labels":{"index":{"ico":"⚽","lbl":"Spiel"},"tabelle":{"ico":"📊","lbl":"Tabelle"},"spielplan":{"ico":"📅","lbl":"Plan"},"tippspiel":{"ico":"🏆","lbl":"Tippspiel"},"fotos":{"ico":"📸","lbl":"Fotos"},"info":{"ico":"📞","lbl":"Info"},"settings":{"ico":"⚙️","lbl":"Einst."},"party_mode":{"ico":"🥳 Party-Modus","lbl":"Getränkekarte \u0026 Songwünsche freischalten"},"server_monitor":{"ico":"🖥️ Server-Monitor","lbl":"Live-Systemstatus in der App anzeigen"}},"local_addr":"127.0.0.1","local_url":"http:\/\/127.0.0.1\/mobile"}</script>
 </head>
 <body>
 <div id="cloud-badge">☁️ CLOUD VERSION</div>
@@ -129,6 +129,12 @@ body {
   </div>
   <div class="panel" data-page="spielplan">
     <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">SPIELPLAN</div><div id="h-plan">…</div></div>
+  </div>
+  <div class="panel" data-page="tippspiel">
+    <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">🏆 TIPPSPIEL</div><div id="h-tipp">Lade Tipp-Rangliste...</div></div>
+  </div>
+  <div class="panel" data-page="fotos">
+    <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">📸 FOTOS</div><div id="h-fotos" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">Warte auf Bilder...</div></div>
   </div>
 </div>
 
@@ -277,6 +283,10 @@ window.onerror = function(msg, url, line) {
                 for (var g in d.tabelle) (d.tabelle[g]||[]).slice(0,5).forEach(function(t,i){ lines.push('<div class="tab-row"><span>'+(i+1)+'. '+(t.name||'')+'</span><span>'+(t.pkt||0)+' Pkt</span></div>'); });
                 hg.innerHTML = lines.join('');
             }
+        }
+        if (d.fotos) {
+            var hf = document.getElementById('h-fotos');
+            if (hf) hf.innerHTML = d.fotos.map(function(f){ return '<img src="'+f.url+'" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;">'; }).join('') || 'Keine Fotos.';
         }
         if (d.colors) {
             document.documentElement.style.setProperty('--or', d.colors.ak);
