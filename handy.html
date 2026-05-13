@@ -124,7 +124,7 @@ body {
   <div class="panel" data-page="tabelle">
     <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">TABELLE</div><div id="h-sieg">…</div></div>
   </div>
-  <div class="panel" data-page="teams">
+  <div class="panel" data-page="team">
     <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">TEAMS</div><div id="h-teams">…</div></div>
   </div>
   <div class="panel" data-page="spielplan">
@@ -159,25 +159,29 @@ window.onerror = function(msg, url, line) {
 
   function buildNav(d) {
     nav.innerHTML = '';
-    var keys = Object.keys(mandatory).concat(Object.keys(P).filter(function(k){ return P[k] && !mandatory[k]; }));
+    var keys = Object.keys(mandatory).concat(Object.keys(P).filter(function(k){ 
+        var nk = k === 'index' ? 'home' : k;
+        return P[k] && !mandatory[nk]; 
+    }));
     
     keys.forEach(function(key, i){
-        var data = L[key] || mandatory[key] || { ico: '🧩', lbl: key };
+        var navKey = key === 'index' ? 'home' : key;
+        var data = L[key] || L[navKey] || mandatory[navKey] || { ico: '🧩', lbl: key };
         var b = document.createElement('button');
         b.className = 'nav-item' + (i === 0 ? ' active' : '');
-        b.dataset.page = key;
+        b.dataset.page = navKey;
         b.innerHTML = '<span class="ico">' + data.ico + '</span><span class="lbl">' + data.lbl + '</span>';
         b.onclick = function(){
             nav.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
             b.classList.add('active');
-            document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-page') === key); });
+            document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-page') === navKey); });
         };
         nav.appendChild(b);
 
-        if (!document.querySelector('.panel[data-page="'+key+'"]')) {
+        if (!document.querySelector('.panel[data-page="'+navKey+'"]')) {
             var dp = document.createElement('div');
             dp.className = 'panel';
-            dp.dataset.page = key;
+            dp.dataset.page = navKey;
             
             if (key === 'impressum') {
                 dp.innerHTML = '<div class="card">' +
