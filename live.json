@@ -18,8 +18,8 @@
         "web": "",
         "boss": ""
     },
-    "updated": "17:02:01",
-    "ts": 1778684521,
+    "updated": "17:04:02",
+    "ts": 1778684642,
     "spiel": {
         "id": 359,
         "team1_id": 2,
@@ -270,9 +270,9 @@
         "cpu_percent": 15,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 5933,
+            "used_mb": 5831,
             "total_mb": 7675,
-            "percent": 77
+            "percent": 76
         },
         "disk": {
             "used_gb": 45.3,
@@ -285,6 +285,6 @@
             "status": "Voll",
             "time_label": "—"
         },
-        "ts": 1778684521
+        "ts": 1778684642
     }
 }
