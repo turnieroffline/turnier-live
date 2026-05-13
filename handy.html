@@ -7,7 +7,13 @@
 <style>
 :root { --or: #ff6b00; --bg: #08090e; --s1: #0e1018; --s2: #141620; --s3: #1e2232; --tx: #dde3f0; --mu: #5c6880; --F: 'Impact', sans-serif; }
 body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--tx); margin:0; padding-bottom: 88px; }
-.hdr { position: sticky; top: 0; background: rgba(14,16,24,0.95); backdrop-filter: blur(10px); padding: 15px; border-bottom: 1px solid var(--or); text-align: center; font-family: var(--F); letter-spacing: 2px; color: var(--or); }
+#cloud-badge {
+    position: fixed; top: 10px; right: 10px; z-index: 1000;
+    background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; color: #3b82f6;
+    padding: 4px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: bold;
+    letter-spacing: 1px; backdrop-filter: blur(5px); pointer-events: none;
+}
+.hdr { background: var(--s1); padding: 18px; text-align: center; font-family: var(--F); font-size: 1.2rem; letter-spacing: 2px; color: var(--or); border-bottom: 1px solid var(--s2); }
 .card { background: var(--s1); border: 1px solid var(--s3); border-radius: 16px; padding: 20px; margin: 15px; }
 .score-num { font-family: var(--F); font-size: 3.5rem; color: #f0b830; letter-spacing: 10px; margin: 10px 0; }
 .teams { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; }
@@ -21,6 +27,7 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
 <script type="application/json" id="cloud-sync-cfg">{"which":"handy","online_tv":true,"online_handy":true,"pages":{"index":true,"tabelle":true,"spielplan":true,"settings":true},"labels":{"index":"⚽","tabelle":"📊","spielplan":"📅","tippspiel":"🏆","fotos":"📸","info":"📞","settings":"⚙️","party_mode":"🥳 Party-Modus","server_monitor":"🖥️ Server-Monitor"}}</script>
 </head>
 <body>
+<div id="cloud-badge">☁️ CLOUD VERSION</div>
 <header class="hdr" id="event-name">TURNIEROFFLINE</header>
 <div id="panels">
   <div class="panel" data-page="live">
