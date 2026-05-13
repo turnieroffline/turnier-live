@@ -11,77 +11,51 @@
 :root {
     --or: #ff6b00;
     --bg: #060810;
-    --s1: color-mix(in srgb, var(--bg) 85%, white 15%);
-    --s2: color-mix(in srgb, var(--bg) 75%, white 25%);
-    --s3: color-mix(in srgb, var(--bg) 65%, white 35%);
-    --tx: #e8edf8;
-    --mu: #6b7fa0;
-    --gn: #20d472;
-    --gd: #f0bc30;
-    --rd: #f04060;
+    --tx: #dde3f0;
+    --mu: #5c6880;
+    --gd: #f0b830;
     --F: 'Impact','Haettenschweiler','Arial Narrow Bold',sans-serif;
-    font-size: 2.8rem; /* Standard TV scale factor */
 }
-body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:100vh; color: var(--tx); font-family: system-ui, sans-serif; font-size: inherit; }
+body {
+    background: var(--bg); color: var(--tx); margin: 0; padding: 0; overflow: hidden; font-family: -apple-system, system-ui, sans-serif;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
 
-/* CLOUD HINT */
 #cloud-badge {
-    position: fixed; top: 115px; right: 20px; z-index: 1000;
+    position: fixed; top: 110px; right: 20px; z-index: 1000;
     background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; color: #3b82f6;
-    padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;
-    letter-spacing: 1px; backdrop-filter: blur(10px); pointer-events: none;
+    padding: 5px 15px; border-radius: 5px; font-size: 0.8rem; font-weight: bold;
+    letter-spacing: 2px; backdrop-filter: blur(10px);
 }
 
-.tv-hdr { 
-    display:flex; align-items:center; justify-content:space-between;
-    padding:.7em 1.5em; height:4em;
-    background:linear-gradient(180deg, var(--s2) 0%, var(--s1) 100%);
-    border-bottom:2px solid var(--or);
-    box-shadow:0 2px 20px rgba(0,0,0,.5);
+.tv-hdr {
+    display: flex; justify-content: space-between; align-items: center;
+    height: 100px; padding: 0 40px; border-bottom: 4px solid var(--or);
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
 }
-.tv-hdr-name { font-family:var(--F); font-size:1.2em; letter-spacing:.2em; color:var(--or); text-transform: uppercase; }
-.tv-hdr-time { font-family:var(--F); font-size:1em; color:var(--mu); }
+.tv-hdr-name { font-family: var(--F); font-size: 3.5rem; color: var(--or); text-transform: uppercase; letter-spacing: 4px; }
+.tv-hdr-time { font-family: var(--F); font-size: 3.5rem; color: var(--tx); }
 
-#tv-content { position: absolute; top: 4em; left: 0; width: 100vw; height: calc(100vh - 8em); overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 1.5em 0; gap: 1.5em; scrollbar-width: none; }
-#tv-content::-webkit-scrollbar { display: none; }
+#tv-content { height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; }
 
 .tv-sec { display: none; width: 100%; max-width: 96vw; text-align: center; }
-.tv-sec.on { display: block; }
-.score-teams { display: flex; align-items: center; justify-content: center; gap: 1.5em; margin-bottom: 0.8em; }
-.score-team { font-family: var(--F); font-size: 2.2em; letter-spacing: 2px; }
-.score-num { font-family: var(--F); font-size: 4em; color: var(--gd); letter-spacing: 15px; text-shadow: 0 0 50px rgba(240,184,48,0.3); }
-.tv-sub { font-family: var(--F); color: var(--or); font-size: 1.2em; margin-bottom: 0.8em; letter-spacing: 3px; text-transform: uppercase; }
-.tv-list { max-width: 1200px; margin: 0 auto; font-size: 0.8em; color: #ccc; text-align: left; }
-.tv-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08); padding: 0.4em 0; }
+.tv-sec.on { display: block; animation: zoomIn 0.5s ease-out; }
+@keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-#tv-footer { position:fixed; bottom:0; left:0; right:0; height:4em; background: #000; border-top:4px solid var(--or); display:flex; align-items:center; overflow:hidden; }
-#ticker-label { background: var(--or); color: #000; font-family: var(--F); font-size: 0.8em; padding: 0.6em 1.2em; z-index: 10; font-weight:bold; }
-#ticker-track { white-space:nowrap; color: var(--or); font-family: var(--F); font-size: 1.5em; animation: tick 30s linear infinite; padding-left: 100%; }
-@keyframes tick { from { transform: translateX(0); } to { transform: translateX(-200%); } }
-
-.tv-legal { position: fixed; bottom: 4.2em; right: 20px; font-size: 0.5rem; color: var(--mu); z-index: 1000; display:flex; gap:15px; }
-.tv-legal a { color: var(--mu); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; }
-</style>
-<script type="application/json" id="cloud-sync-cfg">{"which":"tv","online_tv":true,"online_handy":true,"pages":{"tabelle":true,"spielplan":true,"team":true},"labels":{"tabelle":"📊 Tabelle","spielplan":"📅 Spielplan","team":"👥 Teams","tippspiel":"🎲 Tippspiel","bilder":"📸 Fotos","sieger":"🥇 Sieger","spielregeln":"📜 Regeln","verbinden":"📱 QR-Code","party_tv":"🎉 Party-Wall","server_monitor":"🖥️ Server-Monitor"},"local_addr":"192.168.2.10","local_url":"http:\/\/192.168.2.10\/mobile"}</script>
-</head>
-<body>
-<div id="cloud-badge">☁️ CLOUD VERSION</div>
-<div class="tv-hdr">
-    <div class="tv-hdr-name" id="event-name">LADE...</div>
-    <div class="tv-hdr-time" id="clock">00:00:00</div>
-</div>
-.tv-sec { display: none; width: 100%; max-width: 96vw; text-align: center; }
-.tv-sec.on { display: block; }
 .score-teams { display: flex; align-items: center; justify-content: center; gap: 50px; margin-bottom: 20px; }
 .score-team { font-family: var(--F); font-size: 6rem; letter-spacing: 2px; }
 .score-num { font-family: var(--F); font-size: 11rem; color: var(--gd); letter-spacing: 20px; text-shadow: 0 0 50px rgba(240,184,48,0.3); }
 .tv-sub { font-family: var(--F); color: var(--or); font-size: 2.2rem; margin-bottom: 25px; letter-spacing: 3px; }
 .tv-list { max-width: 1000px; margin: 0 auto; font-size: 1.6rem; color: #ccc; text-align: left; }
 .tv-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08); padding: 15px 0; }
+
 #tv-footer { position:fixed; bottom:0; left:0; right:0; height:100px; background: #000; border-top:4px solid var(--or); display:flex; align-items:center; overflow:hidden; }
 #ticker-label { background: var(--or); color: #000; font-family: var(--F); font-size: 2rem; padding: 15px 40px; z-index: 10; font-weight:bold; }
 #ticker-track { white-space:nowrap; color: var(--or); font-family: var(--F); font-size: 3.5rem; animation: tick 30s linear infinite; padding-left: 100%; }
 @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-200%); } }
+
+.tv-legal { position: fixed; bottom: 110px; right: 20px; font-size: 0.6rem; color: var(--mu); z-index: 1000; display:flex; gap:20px; }
+.tv-legal a { color: var(--mu); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; }
 </style>
 <script type="application/json" id="cloud-sync-cfg">{"which":"tv","online_tv":true,"online_handy":true,"pages":{"tabelle":true,"spielplan":true,"team":true},"labels":{"tabelle":"📊 Tabelle","spielplan":"📅 Spielplan","team":"👥 Teams","tippspiel":"🎲 Tippspiel","bilder":"📸 Fotos","sieger":"🥇 Sieger","spielregeln":"📜 Regeln","verbinden":"📱 QR-Code","party_tv":"🎉 Party-Wall","server_monitor":"🖥️ Server-Monitor"},"local_addr":"192.168.2.10","local_url":"http:\/\/192.168.2.10\/mobile"}</script>
 </head>
@@ -91,6 +65,7 @@ body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:
     <div class="tv-hdr-name" id="logo-area">LADE...</div>
     <div class="tv-hdr-time" id="clock">00:00:00</div>
 </div>
+
 <div id="tv-content">
     <section class="tv-sec" data-page="live">
         <div id="runde-title" class="tv-sub">BITTE WARTEN</div>
@@ -141,11 +116,17 @@ body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:
         </div>
     </section>
 </div>
-<div id="tv-footer"><div id="ticker-label">INFO</div><div id="ticker-track">+++ TURNIEROFFLINE CLOUD TV +++</div></div>
+
+<div id="tv-footer">
+    <div id="ticker-label">INFO</div>
+    <div id="ticker-track">+++ TURNIEROFFLINE CLOUD TV +++</div>
+</div>
+
 <div class="tv-legal">
     <a href="handy.html?p=impressum">📋 Impressum</a>
     <a href="handy.html?p=impressum">🔒 Datenschutz</a>
 </div>
+
 <script>
 window.onerror = function(msg, url, line) {
     var err = document.createElement('div');
@@ -153,9 +134,11 @@ window.onerror = function(msg, url, line) {
     err.textContent = 'TV-ERROR: ' + msg + ' (L:' + line + ')';
     document.body.appendChild(err);
 };
+
 (function(){
   var cfg = { pages: {} };
   try { var el = document.getElementById('cloud-sync-cfg'); if (el && el.textContent) cfg = JSON.parse(el.textContent); } catch (e) {}
+  
   var P = cfg.pages || {};
   var secs = document.querySelectorAll('.tv-sec');
   var activeKeys = Object.keys(P).filter(function(k){ return P[k]; });
@@ -169,18 +152,19 @@ window.onerror = function(msg, url, line) {
       if (sec) {
           sec.classList.add('on');
           var logo = document.getElementById('logo-area');
-          if (logo) logo.textContent = (cfg.labels && cfg.labels[key]) ? cfg.labels[key].lbl : key.toUpperCase();
+          if (logo) logo.textContent = (cfg.labels && cfg.labels[key]) ? cfg.labels[key] : key.toUpperCase();
       }
       currentIndex = (currentIndex + 1) % activeKeys.length;
   }
   
   if (activeKeys.length > 1) setInterval(rotate, 8000);
   rotate();
-})();
-async function update() {
+
+  async function update() {
     try {
         const r = await fetch('live.json?t=' + Date.now());
         const d = await r.json();
+        
         var ticker = document.getElementById('ticker-track');
         if (ticker) ticker.textContent = '+++ ' + (d.event || 'TurnierOffline') + ' Cloud TV +++';
         
@@ -192,10 +176,12 @@ async function update() {
             var st = document.getElementById('tv-stand-body');
             if (st) st.innerHTML = '<div style="text-align:center;font-size:2.2rem">' + d.spiel.t1name + ' <strong style="color:#f0b830">' + d.spiel.tore1 + ':' + d.spiel.tore2 + '</strong> ' + d.spiel.t2name + '</div>';
         }
+
         if (d.teams && Array.isArray(d.teams)) {
             var tb = document.getElementById('tv-teams-body');
             if (tb) tb.innerHTML = d.teams.map(function(t){ return '<div class="tv-row"><span>' + (t.name||'') + '</span></div>'; }).join('') || '—';
         }
+
         if (d.spielplan && Array.isArray(d.spielplan)) {
             var pb = document.getElementById('tv-plan-body');
             if (pb) pb.innerHTML = d.spielplan.slice(0, 30).map(function(s){
@@ -203,6 +189,7 @@ async function update() {
               return '<div class="tv-row"><span>' + n1 + ' vs ' + n2 + '</span><span>' + (s.tore1!=null ? s.tore1+':'+s.tore2 : '') + '</span></div>';
             }).join('') || '—';
         }
+
         if (d.tabelle) {
             var sg = document.getElementById('tv-sieg-body');
             if (sg) {
@@ -213,23 +200,17 @@ async function update() {
                 sg.innerHTML = lines.length ? lines.map(function(x){return '<div style="margin:8px 0">'+x+'</div>';}).join('') : '—';
             }
         }
-        if (d.server_monitor) {
-            var sm = d.server_monitor;
-            var set = function(id, val){ var el = document.getElementById(id); if(el) el.textContent = val; };
-            set('sm-cpu', sm.cpu.pct + '%');
-            set('sm-ram', sm.ram.pct + '%');
-            set('sm-ssd', sm.ssd.pct + '%');
-            set('sm-bat', (sm.battery.pct || 0) + '%');
-        }
+
         if (d.colors) {
             var c = d.colors;
             document.documentElement.style.setProperty('--or', c.ak);
             document.documentElement.style.setProperty('--bg', c.bg);
         }
     } catch(e) {}
-}
-setInterval(update, 10000); update();
-setInterval(function(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE'); }, 1000);
+  }
+  setInterval(update, 10000); update();
+  setInterval(function(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE'); }, 1000);
+})();
 </script>
 </body>
 </html>
