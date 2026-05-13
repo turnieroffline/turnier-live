@@ -84,21 +84,43 @@ body {
     text-align: center; border-radius: 10px; font-weight: bold; margin-top: 15px;
     font-family: var(--F); letter-spacing: 1px; font-size: 1rem;
 }
+
+/* COOKIE BANNER */
+#cookie-banner {
+    position: fixed; bottom: 85px; left: 14px; right: 14px; z-index: 20000;
+    background: var(--s2); border: 1px solid var(--s3); border-radius: 12px; padding: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; animation: slideUp 0.4s ease;
+}
+#cookie-banner.on { display: block; }
+@keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.cb-btn { background: var(--or); color: #000; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+
+.legal-p { font-size: 0.75rem; color: var(--mu2); line-height: 1.6; margin-bottom: 12px; }
+.legal-h3 { font-family: var(--F); color: var(--or); font-size: 0.9rem; margin: 15px 0 5px; letter-spacing: 1px; }
 </style>
 <script type="application/json" id="cloud-sync-cfg">{"which":"handy","online_tv":true,"online_handy":true,"pages":{"index":true,"tabelle":true,"spielplan":true,"tippspiel":true,"fotos":true,"info":true,"settings":true,"party_mode":true,"server_monitor":true},"labels":{"index":{"ico":"⚽","lbl":"Spiel"},"tabelle":{"ico":"📊","lbl":"Tabelle"},"spielplan":{"ico":"📅","lbl":"Plan"},"tippspiel":{"ico":"🏆","lbl":"Tippspiel"},"fotos":{"ico":"📸","lbl":"Fotos"},"info":{"ico":"📞","lbl":"Info"},"settings":{"ico":"⚙️","lbl":"Einst."},"party_mode":{"ico":"🥳 Party-Modus","lbl":"Getränkekarte \u0026 Songwünsche freischalten"},"server_monitor":{"ico":"🖥️ Server-Monitor","lbl":"Live-Systemstatus in der App anzeigen"}},"local_addr":"192.168.2.10","local_url":"http:\/\/192.168.2.10\/mobile"}</script>
 </head>
 <body>
 <div id="cloud-badge">☁️ CLOUD VERSION</div>
 <header class="hdr" id="event-name">TURNIEROFFLINE</header>
+
+<div id="cookie-banner">
+    <div style="font-weight:bold; color:var(--or); margin-bottom:5px;">🍪 PRIVATSPHÄRE-HINWEIS</div>
+    <div style="font-size:0.7rem; color:var(--mu2);">Wir nutzen keine Tracking-Cookies. Diese Webseite dient nur der Information. Mit der Nutzung stimmst du unseren Datenschutzregeln zu.</div>
+    <button class="cb-btn" onclick="document.getElementById('cookie-banner').classList.remove('on'); localStorage.setItem('cb_ok',1);">VERSTANDEN</button>
+</div>
+
 <div id="panels">
-  <div class="panel" data-page="live">
+  <!-- STARTSEITE -->
+  <div class="panel on" data-page="home">
     <div class="card" style="text-align:center">
-        <div id="runde" style="font-size:0.7rem; color:var(--mu); text-transform:uppercase; letter-spacing:2px;">AKTUELLES SPIEL</div>
-        <div class="teams"><span id="t1">HEIM</span><span id="t2">GAST</span></div>
-        <div class="score-num" id="sc">0:0</div>
-        <div style="color:var(--gn); font-weight:bold; font-size:0.8rem;">● LIVE</div>
+        <div id="runde" style="font-size:0.7rem; color:var(--mu); text-transform:uppercase; letter-spacing:2px;">WILLKOMMEN</div>
+        <div class="teams"><span id="t1">LADE DATEN...</span><span id="t2"></span></div>
+        <div class="score-num" id="sc">…</div>
+        <div style="color:var(--mu); font-size:0.8rem; margin-top:10px;">Bitte warten, Daten werden synchronisiert...</div>
     </div>
   </div>
+  
   <div class="panel" data-page="tabelle">
     <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">TABELLE</div><div id="h-sieg">…</div></div>
   </div>
@@ -108,160 +130,148 @@ body {
   <div class="panel" data-page="spielplan">
     <div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">SPIELPLAN</div><div id="h-plan">…</div></div>
   </div>
-  
-<!-- Panel: server_monitor -->
-
-    <div class="panel" data-page="server_monitor">
-        <div class="card" style="padding:15px; background:var(--s2);">
-            <div style="font-family:var(--F); color:var(--or); margin-bottom:15px; letter-spacing:1px;">🖥️ SYSTEM-STATUS</div>
-            <div id="sm-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <div style="padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #3b82f6;">
-                    <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">CPU</div>
-                    <div id="sm-cpu" style="font-size:1.1rem; font-weight:bold; color:#3b82f6;">--%</div>
-                </div>
-                <div style="padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #a855f7;">
-                    <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">RAM</div>
-                    <div id="sm-ram" style="font-size:1.1rem; font-weight:bold; color:#a855f7;">--%</div>
-                </div>
-                <div style="padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #ef4444;">
-                    <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">SSD</div>
-                    <div id="sm-ssd" style="font-size:1.1rem; font-weight:bold; color:#ef4444;">--%</div>
-                </div>
-                <div style="padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #22c55e;">
-                    <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">AKKU</div>
-                    <div id="sm-bat" style="font-size:1.1rem; font-weight:bold; color:#22c55e;">--%</div>
-                </div>
-            </div>
-            <div id="sm-gpu-box" style="margin-top:10px; padding:12px; background:var(--s3); border-radius:10px; border-left:3px solid #1ec96a; display:none;">
-                <div style="font-size:.65rem; color:var(--mu); text-transform:uppercase;">GPU (NVIDIA)</div>
-                <div id="sm-gpu" style="font-size:1.1rem; font-weight:bold; color:#1ec96a;">--%</div>
-            </div>
-        </div>
-    </div>
 </div>
+
 <nav class="nav" id="bottom-nav"></nav>
+
 <script>
 (function(){
+  if (!localStorage.getItem('cb_ok')) document.getElementById('cookie-banner').classList.add('on');
+  
   var cfg = { pages: {}, labels: {}, local_addr: '192.168.2.10', local_url: 'http://192.168.2.10/mobile' };
   try { var el = document.getElementById('cloud-sync-cfg'); if (el && el.textContent) cfg = JSON.parse(el.textContent); } catch (e) {}
   
   var P = cfg.pages || {};
   var L = cfg.labels || {};
   var nav = document.getElementById('bottom-nav');
-  var firstPanel = true;
+  var panelsContainer = document.getElementById('panels');
 
-  Object.keys(P).forEach(function(key){
-    if (!P[key]) return;
-    var data = L[key] || { ico: '🧩', lbl: key };
+  var mandatory = {
+    'home': { ico: '🏠', lbl: 'Home' },
+    'impressum': { ico: '📋', lbl: 'Legal' }
+  };
+
+  function buildNav(d) {
+    nav.innerHTML = '';
+    var keys = Object.keys(mandatory).concat(Object.keys(P).filter(k => P[k] && !mandatory[k]));
     
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'nav-item' + (firstPanel ? ' active' : '');
-    b.innerHTML = '<span class="ico">' + data.ico + '</span><span class="lbl">' + data.lbl + '</span>';
-    b.dataset.page = key;
-    b.onclick = function(){
-      nav.querySelectorAll('.nav-item').forEach(function(x){ x.classList.remove('active'); });
-      b.classList.add('active');
-      document.querySelectorAll('.panel').forEach(function(p){
-        p.classList.toggle('on', p.getAttribute('data-page') === key);
-      });
-    };
-    nav.appendChild(b);
-    var p = document.querySelector('.panel[data-page="'+key+'"]');
-    if (p && firstPanel) { p.classList.add('on'); firstPanel = false; }
-    
-    if (!p) {
-        var dp = document.createElement('div');
-        dp.className = 'panel' + (firstPanel ? ' on' : '');
-        dp.dataset.page = key;
-        
-        var isLocal = key.indexOf('settings') !== -1 || key.indexOf('admin') !== -1 || key === 'verbinden';
-        if (isLocal) {
-            var w = d.wlan || { ssid: 'Turnier-WLAN', pw: 'unbekannt' };
-            dp.innerHTML = '<div class="card">' +
-                '<div style="font-family:var(--F); color:var(--or); margin-bottom:15px; letter-spacing:1px;">📱 LOKALES WLAN ERFORDERLICH</div>' +
-                '<div style="background:rgba(59,130,246,0.1); border:1px solid #3b82f6; border-radius:12px; padding:15px; font-size:.85rem; line-height:1.6;">' +
-                    '<p style="margin-top:0;">Verbinde dich mit dem <strong>Lokalen Turnier-Netzwerk</strong>:</p>' +
-                    '<div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-bottom:15px; font-family:monospace; font-size:0.8rem;">' +
-                        '🌐 SSID: <span style="color:var(--gd)">'+w.ssid+'</span><br>' +
-                        '🔑 PASS: <span style="color:var(--gd)">'+w.pw+'</span>' +
-                    '</div>' +
-                    '<div style="display:flex; gap:15px; align-items:center; margin-bottom:15px;">' +
-                        '<div style="flex:0 0 80px; height:80px; background:#fff; padding:5px; border-radius:8px;">' +
-                            '<img src="https://api.qrserver.com/v1/create-qr-code/?size=70x70&data='+encodeURIComponent(cfg.local_url)+'" style="width:70px;height:70px;display:block;">' +
+    keys.forEach(function(key, i){
+        var data = L[key] || mandatory[key] || { ico: '🧩', lbl: key };
+        var b = document.createElement('button');
+        b.className = 'nav-item' + (i === 0 ? ' active' : '');
+        b.innerHTML = '<span class="ico">' + data.ico + '</span><span class="lbl">' + data.lbl + '</span>';
+        b.onclick = function(){
+            nav.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            document.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.getAttribute('data-page') === key));
+        };
+        nav.appendChild(b);
+
+        if (!document.querySelector('.panel[data-page="'+key+'"]')) {
+            var dp = document.createElement('div');
+            dp.className = 'panel';
+            dp.dataset.page = key;
+            
+            if (key === 'impressum') {
+                dp.innerHTML = '<div class="card">' +
+                    '<div style="font-family:var(--F); color:var(--or); margin-bottom:15px; letter-spacing:1px;">📋 RECHTLICHES</div>' +
+                    '<div id="legal-content">Warte auf Daten...</div>' +
+                '</div>';
+            } else {
+                var isLocal = key.indexOf('settings') !== -1 || key.indexOf('admin') !== -1 || key === 'verbinden';
+                if (isLocal) {
+                    var w = (d && d.wlan) ? d.wlan : { ssid: 'Turnier-WLAN', pw: 'unbekannt' };
+                    dp.innerHTML = '<div class="card">' +
+                        '<div style="font-family:var(--F); color:var(--or); margin-bottom:15px; letter-spacing:1px;">📱 LOKALES WLAN ERFORDERLICH</div>' +
+                        '<div style="background:rgba(59,130,246,0.1); border:1px solid #3b82f6; border-radius:12px; padding:15px; font-size:.85rem; line-height:1.6;">' +
+                            '<p style="margin-top:0;">Verbinde dich mit dem <strong>Lokalen Turnier-Netzwerk</strong>:</p>' +
+                            '<div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-bottom:15px; font-family:monospace; font-size:0.8rem;">' +
+                                '🌐 SSID: <span style="color:var(--gd)">'+w.ssid+'</span><br>' +
+                                '🔑 PASS: <span style="color:var(--gd)">'+w.pw+'</span>' +
+                            '</div>' +
+                            '<div style="display:flex; gap:15px; align-items:center; margin-bottom:15px;">' +
+                                '<div style="flex:0 0 80px; height:80px; background:#fff; padding:5px; border-radius:8px;">' +
+                                    '<img src="https://api.qrserver.com/v1/create-qr-code/?size=70x70&data='+encodeURIComponent(cfg.local_url)+'" style="width:70px;height:70px;display:block;">' +
+                                '</div>' +
+                                '<ol style="padding-left:20px; margin:0; font-size:.75rem;">' +
+                                    '<li>Im WLAN anmelden.</li>' +
+                                    '<li>QR-Code links scannen.</li>' +
+                                    '<li>Oder IP: <strong>'+cfg.local_addr+'</strong></li>' +
+                                </ol>' +
+                            '</div>' +
+                            '<a href="'+cfg.local_url+'" class="wifi-btn">JETZT LOKAL ÖFFNEN</a>' +
                         '</div>' +
-                        '<ol style="padding-left:20px; margin:0; font-size:.75rem;">' +
-                            '<li>Im WLAN anmelden.</li>' +
-                            '<li>QR-Code links scannen.</li>' +
-                            '<li>Oder IP: <strong>'+cfg.local_addr+'</strong></li>' +
-                        '</ol>' +
-                    '</div>' +
-                    '<a href="'+cfg.local_url+'" class="wifi-btn">JETZT LOKAL ÖFFNEN</a>' +
-                    '<p style="font-size:.65rem; color:var(--mu); text-align:center; margin-top:10px;">(Funktioniert nur im Hallen-WLAN!)</p>' +
-                '</div>' +
-            '</div>';
+                    '</div>';
+                } else {
+                    dp.innerHTML = '<div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">'+data.lbl+'</div><p style="color:var(--mu); font-size:.8rem;">Diese Seite wird bald verfügbar sein.</p></div>';
+                }
+            }
+            panelsContainer.appendChild(dp);
         }
- else {
-            dp.innerHTML = '<div class="card"><div style="font-family:var(--F); color:var(--or); margin-bottom:10px;">'+data.lbl+'</div><p style="color:var(--mu); font-size:.8rem;">Diese Seite wird bald verfügbar sein.</p></div>';
-        }
-        document.getElementById('panels').appendChild(dp);
-        if (firstPanel) firstPanel = false;
-    }
-  });
-})();
-async function update() {
+    });
+  }
+  buildNav();
+
+  // URL-Parameter checken (?p=impressum)
+  var urlParams = new URLSearchParams(window.location.search);
+  var pParam = urlParams.get('p');
+  if (pParam) {
+      var targetBtn = nav.querySelector('.nav-item[data-page="'+pParam+'"]');
+      if (!targetBtn) targetBtn = Array.from(nav.querySelectorAll('.nav-item')).find(x => x.textContent.toLowerCase().includes(pParam.toLowerCase()));
+      if (targetBtn) targetBtn.click();
+  }
+
+  async function update() {
     try {
         const r = await fetch('live.json?t=' + Date.now());
         const d = await r.json();
-        document.getElementById('event-name').textContent = d.event;
+        if (d.event) document.getElementById('event-name').textContent = d.event;
+        
+        if (d.legal) {
+            var l = d.legal;
+            var lc = document.getElementById('legal-content');
+            if (lc) lc.innerHTML = '<h3 class="legal-h3">Impressum</h3><p class="legal-p">' + 
+                '<strong>' + l.org + '</strong><br>' + (l.boss ? 'Vertreten durch: ' + l.boss + '<br>' : '') + (l.place ? 'Ort: ' + l.place + '<br>' : '') + 
+                '</p><h3 class="legal-h3">Kontakt</h3><p class="legal-p">' +
+                (l.email ? 'E-Mail: ' + l.email + '<br>' : '') + (l.tel ? 'Tel: ' + l.tel + '<br>' : '') + (l.web ? 'Web: ' + l.web : '') +
+                '</p><h3 class="legal-h3">Datenschutz</h3><p class="legal-p">' +
+                'Diese Webseite dient rein der Information über den aktuellen Spielstand. Es werden keine personenbezogenen Daten erhoben oder Tracking-Cookies gesetzt.' +
+                '</p>';
+        }
+
         if (d.spiel) {
             document.getElementById('t1').textContent = d.spiel.t1name;
             document.getElementById('t2').textContent = d.spiel.t2name;
             document.getElementById('sc').textContent = d.spiel.tore1 + ':' + d.spiel.tore2;
             document.getElementById('runde').textContent = d.spiel.runde || 'LIVE';
-            var hs = document.getElementById('h-stand');
-            if (hs) hs.innerHTML = '<div style="text-align:center;font-size:1.2rem">' + d.spiel.t1name + ' <strong style="color:#f0b830">' + d.spiel.tore1 + ':' + d.spiel.tore2 + '</strong> ' + d.spiel.t2name + '</div>';
         }
-        if (d.teams && Array.isArray(d.teams)) {
+        
+        if (d.teams) {
             var ht = document.getElementById('h-teams');
-            if (ht) ht.innerHTML = d.teams.map(function(t){ return '<div class="tab-row"><span>'+(t.name||'')+'</span></div>'; }).join('') || '—';
+            if (ht) ht.innerHTML = d.teams.map(t => '<div class="tab-row"><span>'+(t.name||'')+'</span></div>').join('');
         }
-        if (d.spielplan && Array.isArray(d.spielplan)) {
+        if (d.spielplan) {
             var hp = document.getElementById('h-plan');
-            if (hp) hp.innerHTML = d.spielplan.slice(0,40).map(function(s){
-              return '<div class="tab-row"><span>'+(s.t1name||'?')+' vs '+(s.t2name||'?')+'</span><span>'+(s.tore1!=null?s.tore1+':'+s.tore2:'')+'</span></div>';
-            }).join('') || '—';
+            if (hp) hp.innerHTML = d.spielplan.slice(0,40).map(s => '<div class="tab-row"><span>'+(s.t1name||'?')+' vs '+(s.t2name||'?')+'</span><span>'+(s.tore1!=null?s.tore1+':'+s.tore2:'')+'</span></div>').join('');
         }
         if (d.tabelle) {
             var hg = document.getElementById('h-sieg');
             if (hg) {
                 var lines = [];
-                for (var g in d.tabelle) {
-                    (d.tabelle[g]||[]).slice(0,5).forEach(function(t,i){ lines.push((i+1)+'. '+(t.name||'')+' — '+(t.pkt||0)+' Pkt'); });
-                }
-                hg.innerHTML = lines.length ? lines.map(function(x){return '<div class="tab-row"><span>'+x+'</span></div>';}).join('') : '—';
-            }
-        }
-        if (d.server_monitor) {
-            var sm = d.server_monitor;
-            var set = function(id, val){ var el = document.getElementById(id); if(el) el.textContent = val; };
-            set('sm-cpu', sm.cpu.pct + '%');
-            set('sm-ram', sm.ram.pct + '%');
-            set('sm-ssd', sm.ssd.pct + '%');
-            set('sm-bat', (sm.battery.pct || 0) + '%');
-            if (sm.gpu && sm.gpu.pct != null) {
-                document.getElementById('sm-gpu-box').style.display = 'block';
-                set('sm-gpu', sm.gpu.pct + '%');
+                for (var g in d.tabelle) (d.tabelle[g]||[]).slice(0,5).forEach((t,i) => lines.push('<div class="tab-row"><span>'+(i+1)+'. '+(t.name||'')+'</span><span>'+(t.pkt||0)+' Pkt</span></div>'));
+                hg.innerHTML = lines.join('');
             }
         }
         if (d.colors) {
-            var c = d.colors;
-            document.documentElement.style.setProperty('--or', c.ak);
-            document.documentElement.style.setProperty('--bg', c.md);
+            document.documentElement.style.setProperty('--or', d.colors.ak);
+            document.documentElement.style.setProperty('--bg', d.colors.md);
         }
+        // Rebuild nav if WiFi info changed
+        buildNav(d);
     } catch(e) {}
-}
-setInterval(update, 10000); update();
+  }
+  setInterval(update, 10000); update();
+})();
 </script>
 </body>
 </html>
