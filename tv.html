@@ -147,6 +147,12 @@ body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:
     <a href="handy.html?p=impressum">🔒 Datenschutz</a>
 </div>
 <script>
+window.onerror = function(msg, url, line) {
+    var err = document.createElement('div');
+    err.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:rgba(232,54,74,0.9);color:#fff;padding:10px;font-size:1rem;z-index:99999;';
+    err.textContent = 'TV-ERROR: ' + msg + ' (L:' + line + ')';
+    document.body.appendChild(err);
+};
 (function(){
   var cfg = { pages: {} };
   try { var el = document.getElementById('cloud-sync-cfg'); if (el && el.textContent) cfg = JSON.parse(el.textContent); } catch (e) {}
