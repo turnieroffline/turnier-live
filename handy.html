@@ -239,65 +239,72 @@ window.onerror = function(msg, url, line) {
   }
 
   function update() {
-    fetch('live.json?t=' + Date.now())
-      .then(function(r){ return r.json(); })
-      .then(function(d){
-        var st = document.getElementById('sync-status');
-        if (st) st.textContent = 'Letzter Abgleich: ' + new Date().toLocaleTimeString('de-DE');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'live.json?t=' + (new Date().getTime()), true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            try {
+                var d = JSON.parse(xhr.responseText);
+                var st = document.getElementById('sync-status');
+                if (st) st.textContent = 'Letzter Abgleich: ' + new Date().toLocaleTimeString('de-DE');
 
-        if (d.event) document.getElementById('event-name').textContent = d.event;
-        
-        if (d.legal) {
-            var l = d.legal;
-            var lc = document.getElementById('legal-content');
-            if (lc) lc.innerHTML = '<h3 class="legal-h3">Impressum</h3><p class="legal-p">' + 
-                '<strong>' + l.org + '</strong><br>' + (l.boss ? 'Vertreten durch: ' + l.boss + '<br>' : '') + (l.place ? 'Ort: ' + l.place + '<br>' : '') + 
-                '</p><h3 class="legal-h3">Kontakt</h3><p class="legal-p">' +
-                (l.email ? 'E-Mail: ' + l.email + '<br>' : '') + (l.tel ? 'Tel: ' + l.tel + '<br>' : '') + (l.web ? 'Web: ' + l.web : '') +
-                '</p><h3 class="legal-h3">Datenschutz</h3><p class="legal-p">' +
-                'Diese Webseite dient rein der Information über den aktuellen Spielstand. Es werden keine personenbezogenen Daten erhoben oder Tracking-Cookies gesetzt.' +
-                '</p>';
-        }
+                if (d.event) document.getElementById('event-name').textContent = d.event;
+                
+                if (d.legal) {
+                    var l = d.legal;
+                    var lc = document.getElementById('legal-content');
+                    if (lc) lc.innerHTML = '<h3 class="legal-h3">Impressum</h3><p class="legal-p">' + 
+                        '<strong>' + (l.org||'') + '</strong><br>' + (l.boss ? 'Vertreten durch: ' + l.boss + '<br>' : '') + (l.place ? 'Ort: ' + l.place + '<br>' : '') + 
+                        '</p><h3 class="legal-h3">Kontakt</h3><p class="legal-p">' +
+                        (l.email ? 'E-Mail: ' + l.email + '<br>' : '') + (l.tel ? 'Tel: ' + l.tel + '<br>' : '') + (l.web ? 'Web: ' + l.web : '') +
+                        '</p><h3 class="legal-h3">Datenschutz</h3><p class="legal-p">' +
+                        'Diese Webseite dient rein der Information über den aktuellen Spielstand. Es werden keine personenbezogenen Daten erhoben oder Tracking-Cookies gesetzt.' +
+                        '</p>';
+                }
 
-        if (d.spiel) {
-            document.getElementById('t1').textContent = d.spiel.t1name;
-            document.getElementById('t2').textContent = d.spiel.t2name;
-            document.getElementById('sc').textContent = d.spiel.tore1 + ':' + d.spiel.tore2;
-            document.getElementById('runde').textContent = d.spiel.runde || 'LIVE';
-        } else {
-            document.getElementById('t1').textContent = 'KEIN SPIEL';
-            document.getElementById('t2').textContent = 'AKTIV';
-            document.getElementById('sc').textContent = '0:0';
-            document.getElementById('runde').textContent = 'WILLKOMMEN';
-        }
-        
-        if (d.teams) {
-            var ht = document.getElementById('h-teams');
-            if (ht) ht.innerHTML = d.teams.map(function(t){ return '<div class="tab-row"><span>'+(t.name||'')+'</span></div>'; }).join('');
-        }
-        if (d.spielplan) {
-            var hp = document.getElementById('h-plan');
-            if (hp) hp.innerHTML = d.spielplan.slice(0,40).map(function(s){ return '<div class="tab-row"><span>'+(s.t1name||'?')+' vs '+(s.t2name||'?')+'</span><span>'+(s.tore1!=null?s.tore1+':'+s.tore2:'')+'</span></div>'; }).join('');
-        }
-        if (d.tabelle) {
-            var hg = document.getElementById('h-sieg');
-            if (hg) {
-                var lines = [];
-                for (var g in d.tabelle) (d.tabelle[g]||[]).slice(0,5).forEach(function(t,i){ lines.push('<div class="tab-row"><span>'+(i+1)+'. '+(t.name||'')+'</span><span>'+(t.pkt||0)+' Pkt</span></div>'); });
-                hg.innerHTML = lines.join('');
+                if (d.spiel) {
+                    document.getElementById('t1').textContent = d.spiel.t1name || 'KEIN SPIEL';
+                    document.getElementById('t2').textContent = d.spiel.t2name || '';
+                    document.getElementById('sc').textContent = (d.spiel.tore1 != null) ? (d.spiel.tore1 + ':' + d.spiel.tore2) : '—';
+                    document.getElementById('runde').textContent = d.spiel.runde || 'LIVE';
+                } else {
+                    document.getElementById('t1').textContent = 'KEIN SPIEL';
+                    document.getElementById('t2').textContent = 'AKTIV';
+                    document.getElementById('sc').textContent = '0:0';
+                    document.getElementById('runde').textContent = 'WILLKOMMEN';
+                }
+                
+                if (d.teams) {
+                    var ht = document.getElementById('h-teams');
+                    if (ht) ht.innerHTML = d.teams.map(function(t){ return '<div class="tab-row"><span>'+(t.name||'')+'</span></div>'; }).join('');
+                }
+                if (d.spielplan) {
+                    var hp = document.getElementById('h-plan');
+                    if (hp) hp.innerHTML = d.spielplan.slice(0,40).map(function(s){ return '<div class="tab-row"><span>'+(s.t1name||'?')+' vs '+(s.t2name||'?')+'</span><span>'+(s.tore1!=null?s.tore1+':'+s.tore2:'')+'</span></div>'; }).join('');
+                }
+                if (d.tabelle) {
+                    var hg = document.getElementById('h-sieg');
+                    if (hg) {
+                        var lines = [];
+                        for (var g in d.tabelle) (d.tabelle[g]||[]).slice(0,5).forEach(function(t,i){ lines.push('<div class="tab-row"><span>'+(i+1)+'. '+(t.name||'')+'</span><span>'+(t.pkt||0)+' Pkt</span></div>'); });
+                        hg.innerHTML = lines.join('');
+                    }
+                }
+                if (d.fotos) {
+                    var hf = document.getElementById('h-fotos');
+                    if (hf) hf.innerHTML = d.fotos.map(function(f){ return '<img src="'+f.url+'" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;">'; }).join('') || 'Keine Fotos.';
+                }
+                if (d.colors) {
+                    document.documentElement.style.setProperty('--or', d.colors.ak);
+                    document.documentElement.style.setProperty('--bg', d.colors.md);
+                }
+                buildNav(d);
+            } catch(e) {
+                if(window.onerror) window.onerror('JSON Error: ' + e.message, '', 0);
             }
         }
-        if (d.fotos) {
-            var hf = document.getElementById('h-fotos');
-            if (hf) hf.innerHTML = d.fotos.map(function(f){ return '<img src="'+f.url+'" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;">'; }).join('') || 'Keine Fotos.';
-        }
-        if (d.colors) {
-            document.documentElement.style.setProperty('--or', d.colors.ak);
-            document.documentElement.style.setProperty('--bg', d.colors.md);
-        }
-        buildNav(d);
-      })
-      .catch(function(e){});
+    };
+    xhr.send();
   }
   setInterval(update, 10000); update();
 })();
