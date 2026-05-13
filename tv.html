@@ -8,37 +8,62 @@
 :root {
     --or: #ff6b00;
     --bg: #060810;
-    --s1: color-mix(in srgb, #060810 85%, white 15%);
-    --s2: color-mix(in srgb, #060810 75%, white 25%);
-    --s3: color-mix(in srgb, #060810 65%, white 35%);
+    --s1: color-mix(in srgb, var(--bg) 85%, white 15%);
+    --s2: color-mix(in srgb, var(--bg) 75%, white 25%);
+    --s3: color-mix(in srgb, var(--bg) 65%, white 35%);
     --tx: #e8edf8;
     --mu: #6b7fa0;
     --gn: #20d472;
     --gd: #f0bc30;
     --rd: #f04060;
-    --F: 'Impact', sans-serif;
+    --F: 'Impact','Haettenschweiler','Arial Narrow Bold',sans-serif;
+    font-size: 2.8rem; /* Standard TV scale factor */
 }
-body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:100vh; color: var(--tx); font-family: system-ui, sans-serif; }
+body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:100vh; color: var(--tx); font-family: system-ui, sans-serif; font-size: inherit; }
 
 /* CLOUD HINT */
 #cloud-badge {
-    position: fixed; top: 10px; right: 10px; z-index: 1000;
+    position: fixed; top: 115px; right: 20px; z-index: 1000;
     background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; color: #3b82f6;
-    padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold;
-    letter-spacing: 1px; backdrop-filter: blur(5px); pointer-events: none;
+    padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;
+    letter-spacing: 1px; backdrop-filter: blur(10px); pointer-events: none;
 }
 
-#tv-header { 
+.tv-hdr { 
     display:flex; align-items:center; justify-content:space-between;
-    padding:0 40px; height:110px;
+    padding:.7em 1.5em; height:4em;
     background:linear-gradient(180deg, var(--s2) 0%, var(--s1) 100%);
     border-bottom:2px solid var(--or);
     box-shadow:0 2px 20px rgba(0,0,0,.5);
 }
-#logo-area { font-family:var(--F); font-size:2.4rem; letter-spacing:4px; color: var(--or); text-transform: uppercase; }
-#clock { font-family:var(--F); font-size:2.2rem; color:var(--mu); }
-#event-name { font-family:var(--F); font-size:2.4rem; letter-spacing:2px; color:var(--tx); text-transform: uppercase; }
-#tv-content { position: absolute; top: 110px; left: 0; width: 100vw; height: calc(100vh - 210px); overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 40px 0; gap: 40px; }
+.tv-hdr-name { font-family:var(--F); font-size:1.2em; letter-spacing:.2em; color:var(--or); text-transform: uppercase; }
+.tv-hdr-time { font-family:var(--F); font-size:1em; color:var(--mu); }
+
+#tv-content { position: absolute; top: 4em; left: 0; width: 100vw; height: calc(100vh - 8em); overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 1.5em 0; gap: 1.5em; scrollbar-width: none; }
+#tv-content::-webkit-scrollbar { display: none; }
+
+.tv-sec { display: none; width: 100%; max-width: 96vw; text-align: center; }
+.tv-sec.on { display: block; }
+.score-teams { display: flex; align-items: center; justify-content: center; gap: 1.5em; margin-bottom: 0.8em; }
+.score-team { font-family: var(--F); font-size: 2.2em; letter-spacing: 2px; }
+.score-num { font-family: var(--F); font-size: 4em; color: var(--gd); letter-spacing: 15px; text-shadow: 0 0 50px rgba(240,184,48,0.3); }
+.tv-sub { font-family: var(--F); color: var(--or); font-size: 1.2em; margin-bottom: 0.8em; letter-spacing: 3px; text-transform: uppercase; }
+.tv-list { max-width: 1200px; margin: 0 auto; font-size: 0.8em; color: #ccc; text-align: left; }
+.tv-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08); padding: 0.4em 0; }
+
+#tv-footer { position:fixed; bottom:0; left:0; right:0; height:4em; background: #000; border-top:4px solid var(--or); display:flex; align-items:center; overflow:hidden; }
+#ticker-label { background: var(--or); color: #000; font-family: var(--F); font-size: 0.8em; padding: 0.6em 1.2em; z-index: 10; font-weight:bold; }
+#ticker-track { white-space:nowrap; color: var(--or); font-family: var(--F); font-size: 1.5em; animation: tick 30s linear infinite; padding-left: 100%; }
+@keyframes tick { from { transform: translateX(0); } to { transform: translateX(-200%); } }
+</style>
+<script type="application/json" id="cloud-sync-cfg">{"which":"tv","online_tv":true,"online_handy":true,"pages":{"spielplan":true,"team":true},"labels":{"tabelle":"📊 Tabelle","spielplan":"📅 Spielplan","team":"👥 Teams","tippspiel":"🎲 Tippspiel","bilder":"📸 Fotos","sieger":"🥇 Sieger","spielregeln":"📜 Regeln","verbinden":"📱 QR-Code","party_tv":"🎉 Party-Wall","server_monitor":"🖥️ Server-Monitor"},"local_addr":"192.168.2.10","local_url":"http:\/\/192.168.2.10\/mobile"}</script>
+</head>
+<body>
+<div id="cloud-badge">☁️ CLOUD VERSION</div>
+<div class="tv-hdr">
+    <div class="tv-hdr-name" id="event-name">LADE...</div>
+    <div class="tv-hdr-time" id="clock">00:00:00</div>
+</div>
 .tv-sec { display: none; width: 100%; max-width: 96vw; text-align: center; }
 .tv-sec.on { display: block; }
 .score-teams { display: flex; align-items: center; justify-content: center; gap: 50px; margin-bottom: 20px; }
@@ -128,7 +153,8 @@ body, html { margin:0; padding:0; background:var(--bg); overflow:hidden; height:
       var sec = document.querySelector('.tv-sec[data-page="'+key+'"]');
       if (sec) {
           sec.classList.add('on');
-          document.getElementById('dynamic-title').textContent = (cfg.labels && cfg.labels[key]) ? cfg.labels[key].split(' ')[1] : key.toUpperCase();
+          var logo = document.getElementById('logo-area');
+          if (logo) logo.textContent = (cfg.labels && cfg.labels[key]) ? cfg.labels[key].lbl : key.toUpperCase();
       }
       currentIndex = (currentIndex + 1) % activeKeys.length;
   }
@@ -178,9 +204,14 @@ async function update() {
             set('sm-ssd', sm.ssd.pct + '%');
             set('sm-bat', (sm.battery.pct || 0) + '%');
         }
+        if (d.colors) {
+            var c = d.colors;
+            document.documentElement.style.setProperty('--or', c.ak);
+            document.documentElement.style.setProperty('--bg', c.bg);
+        }
     } catch(e) {}
 }
-setInterval(update, 5000); update();
+setInterval(update, 10000); update();
 setInterval(function(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE'); }, 1000);
 </script>
 </body>
