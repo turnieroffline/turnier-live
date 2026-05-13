@@ -25,8 +25,8 @@
         "web": "",
         "boss": ""
     },
-    "updated": "21:28:01",
-    "ts": 1778700481,
+    "updated": "21:30:01",
+    "ts": 1778700601,
     "spiel": {
         "id": 359,
         "team1_id": 2,
@@ -274,15 +274,15 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 2,
+        "cpu_percent": 90,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 6665,
+            "used_mb": 6686,
             "total_mb": 7675,
             "percent": 87
         },
         "disk": {
-            "used_gb": 45.6,
+            "used_gb": 45.7,
             "total_gb": 88.8,
             "percent": 51
         },
@@ -290,8 +290,8 @@
             "present": true,
             "percent": 82,
             "status": "Lädt",
-            "time_label": "~50 Min"
+            "time_label": "~53 Min"
         },
-        "ts": 1778700481
+        "ts": 1778700601
     }
 }
