@@ -12,7 +12,7 @@
         "ip": "192.168.2.10"
     },
     "stats": {
-        "cpu": 6,
+        "cpu": 4,
         "ram": 67,
         "ssd": 51,
         "bat": 99
@@ -25,32 +25,46 @@
         "web": "",
         "boss": ""
     },
-    "updated": "16:42:01",
-    "ts": 1778769721,
+    "updated": "16:44:01",
+    "ts": 1778769841,
     "spiel": {
-        "id": 359,
-        "team1_id": 2,
-        "team2_id": 6,
+        "id": 360,
+        "team1_id": 4,
+        "team2_id": 3,
         "tore1": 0,
         "tore2": 0,
-        "status": "laufend",
-        "live_start_ts": 1778769660,
+        "status": "geplant",
+        "live_start_ts": 0,
         "live_pause_ts": 0,
         "live_pause_total": 0,
         "live_end_ts": 0,
         "runde": "Qualifikation",
         "feld": "1",
-        "startzeit": "10:00",
+        "startzeit": "10:21",
         "beginn": "12:00",
         "platz": "1",
         "quote": 1,
-        "t1name": "Turbo-Turtles",
-        "t1farbe": "#f73b86",
-        "t2name": "Goobes",
-        "t2farbe": "#3b82f6"
+        "t1name": "Bratwurst-Elite",
+        "t1farbe": "#51f73b",
+        "t2name": "Code-Crusher",
+        "t2farbe": "#1f1f1f"
     },
     "tabelle": {
         "A": [
+            {
+                "id": 2,
+                "name": "Turbo-Turtles",
+                "farbe": "#f73b86",
+                "gruppe": "A",
+                "sp": 1,
+                "s": 1,
+                "u": 0,
+                "n": 0,
+                "tf": 1,
+                "tg": 0,
+                "td": 1,
+                "pkt": 3
+            },
             {
                 "id": 4,
                 "name": "Bratwurst-Elite",
@@ -98,27 +112,13 @@
                 "name": "Goobes",
                 "farbe": "#3b82f6",
                 "gruppe": "A",
-                "sp": 0,
+                "sp": 1,
                 "s": 0,
                 "u": 0,
-                "n": 0,
+                "n": 1,
                 "tf": 0,
-                "tg": 0,
-                "td": 0,
-                "pkt": 0
-            },
-            {
-                "id": 2,
-                "name": "Turbo-Turtles",
-                "farbe": "#f73b86",
-                "gruppe": "A",
-                "sp": 0,
-                "s": 0,
-                "u": 0,
-                "n": 0,
-                "tf": 0,
-                "tg": 0,
-                "td": 0,
+                "tg": 1,
+                "td": -1,
                 "pkt": 0
             }
         ]
@@ -195,13 +195,13 @@
             "id": 359,
             "team1_id": 2,
             "team2_id": 6,
-            "tore1": 0,
+            "tore1": 1,
             "tore2": 0,
-            "status": "laufend",
+            "status": "beendet",
             "live_start_ts": 1778769660,
             "live_pause_ts": 0,
             "live_pause_total": 0,
-            "live_end_ts": 0,
+            "live_end_ts": 1778769796,
             "runde": "Qualifikation",
             "feld": "1",
             "startzeit": "10:00",
@@ -274,10 +274,10 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 13,
+        "cpu_percent": 2,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 5137,
+            "used_mb": 5148,
             "total_mb": 7675,
             "percent": 67
         },
@@ -292,6 +292,6 @@
             "status": "Lädt",
             "time_label": "—"
         },
-        "ts": 1778769722
+        "ts": 1778769841
     }
 }
