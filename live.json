@@ -12,21 +12,21 @@
         "ip": "192.168.2.10"
     },
     "stats": {
-        "cpu": 1,
+        "cpu": 2,
         "ram": 60,
         "ssd": 51,
         "bat": 100
     },
     "legal": {
         "org": "Tobias ",
-        "place": "94333 Hadersbach Freyer  Strasse 1a",
+        "place": "94333 Hadersbach Freyer  Straße 1a",
         "email": "",
         "tel": "",
         "web": "",
         "boss": ""
     },
-    "updated": "22:36:02",
-    "ts": 1778790962,
+    "updated": "22:38:02",
+    "ts": 1778791082,
     "spiel": {
         "id": 366,
         "team1_id": 2,
@@ -274,10 +274,10 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 7,
+        "cpu_percent": 2,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 4594,
+            "used_mb": 4598,
             "total_mb": 7675,
             "percent": 60
         },
@@ -292,6 +292,6 @@
             "status": "Voll",
             "time_label": "—"
         },
-        "ts": 1778790962
+        "ts": 1778791082
     }
 }
