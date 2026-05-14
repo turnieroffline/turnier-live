@@ -25,8 +25,8 @@
         "web": "",
         "boss": ""
     },
-    "updated": "14:26:01",
-    "ts": 1778761561,
+    "updated": "14:28:01",
+    "ts": 1778761681,
     "spiel": {
         "id": 359,
         "team1_id": 2,
@@ -274,10 +274,10 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 1,
+        "cpu_percent": 0,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 811,
+            "used_mb": 807,
             "total_mb": 7675,
             "percent": 11
         },
@@ -292,6 +292,6 @@
             "status": "Lädt",
             "time_label": "—"
         },
-        "ts": 1778761562
+        "ts": 1778761681
     }
 }
