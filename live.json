@@ -1,5 +1,5 @@
 {
-    "event": "TurnierOffline",
+    "event": "Lebendkicker 2026",
     "colors": {
         "ak": "#ff6b00",
         "bg": "#060810",
@@ -18,15 +18,15 @@
         "bat": 100
     },
     "legal": {
-        "org": "",
-        "place": "",
+        "org": "Tobias ",
+        "place": "94333 Hadersbach Freyer  Strasse 1a",
         "email": "",
         "tel": "",
         "web": "",
         "boss": ""
     },
-    "updated": "22:34:01",
-    "ts": 1778790841,
+    "updated": "22:36:02",
+    "ts": 1778790962,
     "spiel": {
         "id": 366,
         "team1_id": 2,
@@ -274,15 +274,15 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 1,
+        "cpu_percent": 7,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 4601,
+            "used_mb": 4594,
             "total_mb": 7675,
             "percent": 60
         },
         "disk": {
-            "used_gb": 45.6,
+            "used_gb": 45.7,
             "total_gb": 88.8,
             "percent": 51
         },
@@ -292,6 +292,6 @@
             "status": "Voll",
             "time_label": "—"
         },
-        "ts": 1778790841
+        "ts": 1778790962
     }
 }
