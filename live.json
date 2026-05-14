@@ -12,7 +12,7 @@
         "ip": "192.168.2.10"
     },
     "stats": {
-        "cpu": 6,
+        "cpu": 1,
         "ram": 60,
         "ssd": 51,
         "bat": 100
@@ -25,13 +25,13 @@
         "web": "",
         "boss": ""
     },
-    "updated": "21:40:02",
-    "ts": 1778787602,
+    "updated": "21:42:01",
+    "ts": 1778787721,
     "spiel": {
         "id": 366,
         "team1_id": 2,
         "team2_id": 3,
-        "tore1": 0,
+        "tore1": 1,
         "tore2": 0,
         "status": "laufend",
         "live_start_ts": 1778777453,
@@ -235,7 +235,7 @@
             "id": 366,
             "team1_id": 2,
             "team2_id": 3,
-            "tore1": 0,
+            "tore1": 1,
             "tore2": 0,
             "status": "laufend",
             "live_start_ts": 1778777453,
@@ -274,10 +274,10 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 2,
+        "cpu_percent": 1,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 4607,
+            "used_mb": 4585,
             "total_mb": 7675,
             "percent": 60
         },
@@ -292,6 +292,6 @@
             "status": "Voll",
             "time_label": "—"
         },
-        "ts": 1778787602
+        "ts": 1778787721
     }
 }
