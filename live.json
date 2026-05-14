@@ -13,7 +13,7 @@
     },
     "stats": {
         "cpu": 1,
-        "ram": 73,
+        "ram": 74,
         "ssd": 51,
         "bat": 99
     },
@@ -25,8 +25,8 @@
         "web": "",
         "boss": ""
     },
-    "updated": "17:00:02",
-    "ts": 1778770802,
+    "updated": "17:02:01",
+    "ts": 1778770921,
     "spiel": {
         "id": 360,
         "team1_id": 4,
@@ -277,9 +277,9 @@
         "cpu_percent": 4,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 5590,
+            "used_mb": 5654,
             "total_mb": 7675,
-            "percent": 73
+            "percent": 74
         },
         "disk": {
             "used_gb": 45.6,
@@ -292,6 +292,6 @@
             "status": "Lädt",
             "time_label": "—"
         },
-        "ts": 1778770802
+        "ts": 1778770921
     }
 }
