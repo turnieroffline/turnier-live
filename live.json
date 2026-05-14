@@ -12,8 +12,8 @@
         "ip": "192.168.2.10"
     },
     "stats": {
-        "cpu": 3,
-        "ram": 74,
+        "cpu": 5,
+        "ram": 75,
         "ssd": 51,
         "bat": 99
     },
@@ -25,32 +25,46 @@
         "web": "",
         "boss": ""
     },
-    "updated": "17:10:01",
-    "ts": 1778771401,
+    "updated": "17:12:01",
+    "ts": 1778771521,
     "spiel": {
-        "id": 360,
-        "team1_id": 4,
+        "id": 366,
+        "team1_id": 2,
         "team2_id": 3,
-        "tore1": 3,
-        "tore2": 2,
-        "status": "laufend",
-        "live_start_ts": 1778770005,
+        "tore1": 0,
+        "tore2": 0,
+        "status": "geplant",
+        "live_start_ts": 0,
         "live_pause_ts": 0,
         "live_pause_total": 0,
         "live_end_ts": 0,
-        "runde": "Qualifikation",
+        "runde": "Halbfinale 1",
         "feld": "1",
-        "startzeit": "10:21",
+        "startzeit": "12:27",
         "beginn": "12:00",
         "platz": "1",
         "quote": 1,
-        "t1name": "Bratwurst-Elite",
-        "t1farbe": "#51f73b",
+        "t1name": "Turbo-Turtles",
+        "t1farbe": "#f73b86",
         "t2name": "Code-Crusher",
         "t2farbe": "#1f1f1f"
     },
     "tabelle": {
         "A": [
+            {
+                "id": 4,
+                "name": "Bratwurst-Elite",
+                "farbe": "#51f73b",
+                "gruppe": "A",
+                "sp": 1,
+                "s": 1,
+                "u": 0,
+                "n": 0,
+                "tf": 3,
+                "tg": 2,
+                "td": 1,
+                "pkt": 3
+            },
             {
                 "id": 2,
                 "name": "Turbo-Turtles",
@@ -66,9 +80,9 @@
                 "pkt": 3
             },
             {
-                "id": 4,
-                "name": "Bratwurst-Elite",
-                "farbe": "#51f73b",
+                "id": 1,
+                "name": "Die Pixel-Kicker",
+                "farbe": "#3b82f6",
                 "gruppe": "A",
                 "sp": 0,
                 "s": 0,
@@ -84,27 +98,13 @@
                 "name": "Code-Crusher",
                 "farbe": "#1f1f1f",
                 "gruppe": "A",
-                "sp": 0,
+                "sp": 1,
                 "s": 0,
                 "u": 0,
-                "n": 0,
-                "tf": 0,
-                "tg": 0,
-                "td": 0,
-                "pkt": 0
-            },
-            {
-                "id": 1,
-                "name": "Die Pixel-Kicker",
-                "farbe": "#3b82f6",
-                "gruppe": "A",
-                "sp": 0,
-                "s": 0,
-                "u": 0,
-                "n": 0,
-                "tf": 0,
-                "tg": 0,
-                "td": 0,
+                "n": 1,
+                "tf": 2,
+                "tg": 3,
+                "td": -1,
                 "pkt": 0
             },
             {
@@ -217,11 +217,11 @@
             "team2_id": 3,
             "tore1": 3,
             "tore2": 2,
-            "status": "laufend",
+            "status": "beendet",
             "live_start_ts": 1778770005,
             "live_pause_ts": 0,
-            "live_pause_total": 0,
-            "live_end_ts": 0,
+            "live_pause_total": 14,
+            "live_end_ts": 1778771473,
             "runde": "Qualifikation",
             "feld": "1",
             "startzeit": "10:21",
@@ -277,9 +277,9 @@
         "cpu_percent": 3,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 5686,
+            "used_mb": 5724,
             "total_mb": 7675,
-            "percent": 74
+            "percent": 75
         },
         "disk": {
             "used_gb": 45.6,
@@ -292,6 +292,6 @@
             "status": "Lädt",
             "time_label": "—"
         },
-        "ts": 1778771402
+        "ts": 1778771521
     }
 }
