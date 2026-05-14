@@ -12,8 +12,8 @@
         "ip": "192.168.2.10"
     },
     "stats": {
-        "cpu": 24,
-        "ram": 74,
+        "cpu": 16,
+        "ram": 72,
         "ssd": 51,
         "bat": 99
     },
@@ -25,14 +25,14 @@
         "web": "",
         "boss": ""
     },
-    "updated": "16:50:02",
-    "ts": 1778770202,
+    "updated": "16:52:01",
+    "ts": 1778770321,
     "spiel": {
         "id": 360,
         "team1_id": 4,
         "team2_id": 3,
-        "tore1": 0,
-        "tore2": 0,
+        "tore1": 1,
+        "tore2": 2,
         "status": "laufend",
         "live_start_ts": 1778770005,
         "live_pause_ts": 0,
@@ -215,8 +215,8 @@
             "id": 360,
             "team1_id": 4,
             "team2_id": 3,
-            "tore1": 0,
-            "tore2": 0,
+            "tore1": 1,
+            "tore2": 2,
             "status": "laufend",
             "live_start_ts": 1778770005,
             "live_pause_ts": 0,
@@ -274,12 +274,12 @@
     ],
     "fotos": [],
     "server_monitor": {
-        "cpu_percent": 17,
+        "cpu_percent": 7,
         "gpu_percent": null,
         "ram": {
-            "used_mb": 5648,
+            "used_mb": 5557,
             "total_mb": 7675,
-            "percent": 74
+            "percent": 72
         },
         "disk": {
             "used_gb": 45.6,
@@ -292,6 +292,6 @@
             "status": "Lädt",
             "time_label": "—"
         },
-        "ts": 1778770202
+        "ts": 1778770321
     }
 }
